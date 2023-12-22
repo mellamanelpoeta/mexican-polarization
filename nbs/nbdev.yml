@@ -1,0 +1,9 @@
+project:
+  output-dir: _docs
+
+website:
+  title: "mexican-polarization"
+  site-url: "https://mellamanelpoeta.github.io/mexican-polarization"
+  description: "This is a project to measure polarization on social networks through the use of moral dictionaries."
+  repo-branch: main
+  repo-url: "https://github.com/mellamanelpoeta/mexican-polarization"
