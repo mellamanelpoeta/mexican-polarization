@@ -4,3 +4,4 @@ website:
       - index.ipynb
       - 00_loader.ipynb
       - 01_analyzer.ipynb
+      - 02_classifier.ipynb
