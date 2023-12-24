@@ -6,9 +6,15 @@ __all__ = ['Classifier']
 # %% ../nbs/02_classifier.ipynb 3
 import pandas as pd
 import numpy as np
+from sklearn.neighbors import KNeighborsClassifier
+from sklearn.model_selection import train_test_split
 
-# %% ../nbs/02_classifier.ipynb 9
+# %% ../nbs/02_classifier.ipynb 11
 class Classifier:
+    def __init__(self):
+        self.embeddings = None
+        self.vice = None
+        self.virtue = None
 
     def load_embeddings(file_path):
         '''Loads the embeddings from a file and returns a dictionary with the words as keys and the vectors as values'''
@@ -20,5 +26,32 @@ class Classifier:
                 vector = np.array(values[1:], dtype='float32')
                 print(vector.shape)
                 word_to_vec[word] = vector
+        self.embeddings = word_to_vec
         return word_to_vec
+    
+    
+    def list_to_vec(vice, virtue, word_to_vec):
+        '''Returns the vector representation of a list of words in a df'''
+        data = {'word': [], 'vector': [], 'category': []}
+        for word in vice:
+            if word in word_to_vec.keys():
+                data['word'].append(word)
+                data['vector'].append(word_to_vec[word])
+                data['category'].append(0.0) #vice will be represented as 0
+            else:
+                data['word'].append(word)
+                data['vector'].append(np.nan)
+                data['category'].append(0.0) 
+        
+        for word in virtue:
+            if word in word_to_vec.keys():
+                data['word'].append(word)
+                data['vector'].append(word_to_vec[word])
+                data['category'].append(1.0) #virtue will be represented as 1
+            else:
+                data['word'].append(word)
+                data['vector'].append(np.nan)
+                data['category'].append(1.0)
 
+        df = pd.DataFrame(data)
+        return df
