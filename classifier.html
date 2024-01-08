@@ -1,0 +1,1036 @@
+<!DOCTYPE html>
+<html xmlns="http://www.w3.org/1999/xhtml" lang="en" xml:lang="en"><head>
+
+<meta charset="utf-8">
+<meta name="generator" content="quarto-1.3.450">
+
+<meta name="viewport" content="width=device-width, initial-scale=1.0, user-scalable=yes">
+
+<meta name="description" content="This is the class that creates the dictionary model">
+
+<title>mexican-polarization - Classifier</title>
+<style>
+code{white-space: pre-wrap;}
+span.smallcaps{font-variant: small-caps;}
+div.columns{display: flex; gap: min(4vw, 1.5em);}
+div.column{flex: auto; overflow-x: auto;}
+div.hanging-indent{margin-left: 1.5em; text-indent: -1.5em;}
+ul.task-list{list-style: none;}
+ul.task-list li input[type="checkbox"] {
+  width: 0.8em;
+  margin: 0 0.8em 0.2em -1em; /* quarto-specific, see https://github.com/quarto-dev/quarto-cli/issues/4556 */ 
+  vertical-align: middle;
+}
+/* CSS for syntax highlighting */
+pre > code.sourceCode { white-space: pre; position: relative; }
+pre > code.sourceCode > span { display: inline-block; line-height: 1.25; }
+pre > code.sourceCode > span:empty { height: 1.2em; }
+.sourceCode { overflow: visible; }
+code.sourceCode > span { color: inherit; text-decoration: inherit; }
+div.sourceCode { margin: 1em 0; }
+pre.sourceCode { margin: 0; }
+@media screen {
+div.sourceCode { overflow: auto; }
+}
+@media print {
+pre > code.sourceCode { white-space: pre-wrap; }
+pre > code.sourceCode > span { text-indent: -5em; padding-left: 5em; }
+}
+pre.numberSource code
+  { counter-reset: source-line 0; }
+pre.numberSource code > span
+  { position: relative; left: -4em; counter-increment: source-line; }
+pre.numberSource code > span > a:first-child::before
+  { content: counter(source-line);
+    position: relative; left: -1em; text-align: right; vertical-align: baseline;
+    border: none; display: inline-block;
+    -webkit-touch-callout: none; -webkit-user-select: none;
+    -khtml-user-select: none; -moz-user-select: none;
+    -ms-user-select: none; user-select: none;
+    padding: 0 4px; width: 4em;
+  }
+pre.numberSource { margin-left: 3em;  padding-left: 4px; }
+div.sourceCode
+  {   }
+@media screen {
+pre > code.sourceCode > span > a:first-child::before { text-decoration: underline; }
+}
+</style>
+
+
+<script src="site_libs/quarto-nav/quarto-nav.js"></script>
+<script src="site_libs/quarto-nav/headroom.min.js"></script>
+<script src="site_libs/clipboard/clipboard.min.js"></script>
+<script src="site_libs/quarto-search/autocomplete.umd.js"></script>
+<script src="site_libs/quarto-search/fuse.min.js"></script>
+<script src="site_libs/quarto-search/quarto-search.js"></script>
+<meta name="quarto:offset" content="./">
+<script src="site_libs/quarto-html/quarto.js"></script>
+<script src="site_libs/quarto-html/popper.min.js"></script>
+<script src="site_libs/quarto-html/tippy.umd.min.js"></script>
+<script src="site_libs/quarto-html/anchor.min.js"></script>
+<link href="site_libs/quarto-html/tippy.css" rel="stylesheet">
+<link href="site_libs/quarto-html/quarto-syntax-highlighting.css" rel="stylesheet" id="quarto-text-highlighting-styles">
+<script src="site_libs/bootstrap/bootstrap.min.js"></script>
+<link href="site_libs/bootstrap/bootstrap-icons.css" rel="stylesheet">
+<link href="site_libs/bootstrap/bootstrap.min.css" rel="stylesheet" id="quarto-bootstrap" data-mode="light">
+<script id="quarto-search-options" type="application/json">{
+  "location": "navbar",
+  "copy-button": false,
+  "collapse-after": 3,
+  "panel-placement": "end",
+  "type": "overlay",
+  "limit": 20,
+  "language": {
+    "search-no-results-text": "No results",
+    "search-matching-documents-text": "matching documents",
+    "search-copy-link-title": "Copy link to search",
+    "search-hide-matches-text": "Hide additional matches",
+    "search-more-match-text": "more match in this document",
+    "search-more-matches-text": "more matches in this document",
+    "search-clear-button-title": "Clear",
+    "search-detached-cancel-button-title": "Cancel",
+    "search-submit-button-title": "Submit",
+    "search-label": "Search"
+  }
+}</script>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/require.js/2.3.6/require.min.js" integrity="sha512-c3Nl8+7g4LMSTdrm621y7kf9v3SDPnhxLNhcjFJbKECVnmZHTdo+IRO05sNLTH/D3vA6u1X32ehoLC7WFVdheg==" crossorigin="anonymous"></script>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/jquery/3.5.1/jquery.min.js" integrity="sha512-bLT0Qm9VnAYZDflyKcBaQ2gg0hSYNQrJ8RilYldYQ1FxQYoCLtUjuuRuZo+fjqhx/qtq/1itJ0C2ejDxltZVFg==" crossorigin="anonymous"></script>
+<script type="application/javascript">define('jquery', [],function() {return window.jQuery;})</script>
+
+
+<link rel="stylesheet" href="styles.css">
+<meta property="og:title" content="mexican-polarization - Classifier">
+<meta property="og:description" content="This is the class that creates the dictionary model">
+<meta property="og:image" content="https://mellamanelpoeta.github.io/mexican-polarization/02_classifier_files/figure-html/cell-16-output-2.png">
+<meta property="og:site-name" content="mexican-polarization">
+<meta property="og:image:height" content="547">
+<meta property="og:image:width" content="709">
+<meta name="twitter:title" content="mexican-polarization - Classifier">
+<meta name="twitter:description" content="This is the class that creates the dictionary model">
+<meta name="twitter:image" content="https://mellamanelpoeta.github.io/mexican-polarization/02_classifier_files/figure-html/cell-16-output-2.png">
+<meta name="twitter:image-height" content="547">
+<meta name="twitter:image-width" content="709">
+<meta name="twitter:card" content="summary_large_image">
+</head>
+
+<body class="nav-sidebar floating nav-fixed">
+
+<div id="quarto-search-results"></div>
+  <header id="quarto-header" class="headroom fixed-top">
+    <nav class="navbar navbar-expand-lg navbar-dark ">
+      <div class="navbar-container container-fluid">
+      <div class="navbar-brand-container">
+    <a class="navbar-brand" href="./index.html">
+    <span class="navbar-title">mexican-polarization</span>
+    </a>
+  </div>
+        <div class="quarto-navbar-tools ms-auto">
+</div>
+          <div id="quarto-search" class="" title="Search"></div>
+      </div> <!-- /container-fluid -->
+    </nav>
+  <nav class="quarto-secondary-nav">
+    <div class="container-fluid d-flex">
+      <button type="button" class="quarto-btn-toggle btn" data-bs-toggle="collapse" data-bs-target="#quarto-sidebar,#quarto-sidebar-glass" aria-controls="quarto-sidebar" aria-expanded="false" aria-label="Toggle sidebar navigation" onclick="if (window.quartoToggleHeadroom) { window.quartoToggleHeadroom(); }">
+        <i class="bi bi-layout-text-sidebar-reverse"></i>
+      </button>
+      <nav class="quarto-page-breadcrumbs" aria-label="breadcrumb"><ol class="breadcrumb"><li class="breadcrumb-item"><a href="./classifier.html">Classifier</a></li></ol></nav>
+      <a class="flex-grow-1" role="button" data-bs-toggle="collapse" data-bs-target="#quarto-sidebar,#quarto-sidebar-glass" aria-controls="quarto-sidebar" aria-expanded="false" aria-label="Toggle sidebar navigation" onclick="if (window.quartoToggleHeadroom) { window.quartoToggleHeadroom(); }">      
+      </a>
+    </div>
+  </nav>
+</header>
+<!-- content -->
+<div id="quarto-content" class="quarto-container page-columns page-rows-contents page-layout-article page-navbar">
+<!-- sidebar -->
+  <nav id="quarto-sidebar" class="sidebar collapse collapse-horizontal sidebar-navigation floating overflow-auto">
+    <div class="sidebar-menu-container"> 
+    <ul class="list-unstyled mt-1">
+        <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="./index.html" class="sidebar-item-text sidebar-link">
+ <span class="menu-text">mexican-polarization</span></a>
+  </div>
+</li>
+        <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="./loader.html" class="sidebar-item-text sidebar-link">
+ <span class="menu-text">Loader</span></a>
+  </div>
+</li>
+        <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="./analyzer.html" class="sidebar-item-text sidebar-link">
+ <span class="menu-text">Analyzer</span></a>
+  </div>
+</li>
+        <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="./classifier.html" class="sidebar-item-text sidebar-link active">
+ <span class="menu-text">Classifier</span></a>
+  </div>
+</li>
+    </ul>
+    </div>
+</nav>
+<div id="quarto-sidebar-glass" data-bs-toggle="collapse" data-bs-target="#quarto-sidebar,#quarto-sidebar-glass"></div>
+<!-- margin-sidebar -->
+    <div id="quarto-margin-sidebar" class="sidebar margin-sidebar">
+        <nav id="TOC" role="doc-toc" class="toc-active">
+    <h2 id="toc-title">On this page</h2>
+   
+  <ul>
+  <li><a href="#classifier" id="toc-classifier" class="nav-link active" data-scroll-target="#classifier">Classifier</a></li>
+  <li><a href="#vice-words" id="toc-vice-words" class="nav-link" data-scroll-target="#vice-words">Vice words</a></li>
+  <li><a href="#virtue-words" id="toc-virtue-words" class="nav-link" data-scroll-target="#virtue-words">Virtue words</a>
+  <ul class="collapse">
+  <li><a href="#using-the-model-to-tag-adjectives-found-on-media" id="toc-using-the-model-to-tag-adjectives-found-on-media" class="nav-link" data-scroll-target="#using-the-model-to-tag-adjectives-found-on-media">Using the model to tag adjectives found on media*</a></li>
+  </ul></li>
+  <li><a href="#given-a-word-return-the-k-nearest-neighbors" id="toc-given-a-word-return-the-k-nearest-neighbors" class="nav-link" data-scroll-target="#given-a-word-return-the-k-nearest-neighbors">Given a word, return the k nearest neighbors:</a></li>
+  <li><a href="#given-a-word-predict-its-category" id="toc-given-a-word-predict-its-category" class="nav-link" data-scroll-target="#given-a-word-predict-its-category">Given a word, predict its category</a></li>
+  </ul>
+<div class="toc-actions"><div><i class="bi bi-github"></i></div><div class="action-links"><p><a href="https://github.com/mellamanelpoeta/mexican-polarization/issues/new" class="toc-action">Report an issue</a></p></div></div></nav>
+    </div>
+<!-- main -->
+<main class="content" id="quarto-document-content">
+
+<header id="title-block-header" class="quarto-title-block default">
+<div class="quarto-title">
+<h1 class="title">Classifier</h1>
+</div>
+
+<div>
+  <div class="description">
+    This is the class that creates the dictionary model
+  </div>
+</div>
+
+
+<div class="quarto-title-meta">
+
+    
+  
+    
+  </div>
+  
+
+</header>
+
+<!-- WARNING: THIS FILE WAS AUTOGENERATED! DO NOT EDIT! -->
+<div class="cell" data-execution_count="23">
+<div class="sourceCode cell-code" id="cb1"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb1-1"><a href="#cb1-1" aria-hidden="true" tabindex="-1"></a><span class="co">#negative_words file</span></span>
+<span id="cb1-2"><a href="#cb1-2" aria-hidden="true" tabindex="-1"></a>df <span class="op">=</span> pd.read_csv(<span class="st">'negative_words.csv'</span>)</span>
+<span id="cb1-3"><a href="#cb1-3" aria-hidden="true" tabindex="-1"></a>df <span class="op">=</span> df.drop(columns<span class="op">=</span>[<span class="st">'original'</span>]) <span class="co">#drop it since it contains the concept with an * in it</span></span>
+<span id="cb1-4"><a href="#cb1-4" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb1-5"><a href="#cb1-5" aria-hidden="true" tabindex="-1"></a>neg_words <span class="op">=</span> [] </span>
+<span id="cb1-6"><a href="#cb1-6" aria-hidden="true" tabindex="-1"></a><span class="cf">for</span> _, row <span class="kw">in</span> df.iterrows():</span>
+<span id="cb1-7"><a href="#cb1-7" aria-hidden="true" tabindex="-1"></a>    <span class="cf">for</span> item <span class="kw">in</span> row:</span>
+<span id="cb1-8"><a href="#cb1-8" aria-hidden="true" tabindex="-1"></a>        <span class="cf">if</span> pd.notnull(item):</span>
+<span id="cb1-9"><a href="#cb1-9" aria-hidden="true" tabindex="-1"></a>            neg_words.append(item)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+</div>
+<div class="cell" data-execution_count="24">
+<div class="sourceCode cell-code" id="cb2"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb2-1"><a href="#cb2-1" aria-hidden="true" tabindex="-1"></a><span class="co">#Drop duplicates in neg_words:</span></span>
+<span id="cb2-2"><a href="#cb2-2" aria-hidden="true" tabindex="-1"></a>neg_words <span class="op">=</span> <span class="bu">list</span>(<span class="bu">set</span>(neg_words))</span>
+<span id="cb2-3"><a href="#cb2-3" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb2-4"><a href="#cb2-4" aria-hidden="true" tabindex="-1"></a><span class="bu">len</span>(neg_words)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="cell-output cell-output-display" data-execution_count="24">
+<pre><code>1599</code></pre>
+</div>
+</div>
+<div class="cell" data-execution_count="25">
+<div class="sourceCode cell-code" id="cb4"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb4-1"><a href="#cb4-1" aria-hidden="true" tabindex="-1"></a><span class="co">#moral_foundations_dictionary file:</span></span>
+<span id="cb4-2"><a href="#cb4-2" aria-hidden="true" tabindex="-1"></a>df <span class="op">=</span> pd.read_csv(<span class="st">'moral_foundations_dictionary_1.0.csv'</span>)</span>
+<span id="cb4-3"><a href="#cb4-3" aria-hidden="true" tabindex="-1"></a>df <span class="op">=</span> df[[<span class="st">'categories'</span>,<span class="st">'word_examples'</span>]]</span>
+<span id="cb4-4"><a href="#cb4-4" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb4-5"><a href="#cb4-5" aria-hidden="true" tabindex="-1"></a>virtue <span class="op">=</span> []</span>
+<span id="cb4-6"><a href="#cb4-6" aria-hidden="true" tabindex="-1"></a>vice <span class="op">=</span> []</span>
+<span id="cb4-7"><a href="#cb4-7" aria-hidden="true" tabindex="-1"></a><span class="cf">for</span> _, row <span class="kw">in</span> df.iterrows():</span>
+<span id="cb4-8"><a href="#cb4-8" aria-hidden="true" tabindex="-1"></a>    <span class="cf">if</span> pd.notnull(row[<span class="st">'word_examples'</span>]):</span>
+<span id="cb4-9"><a href="#cb4-9" aria-hidden="true" tabindex="-1"></a>        words <span class="op">=</span> row[<span class="st">'word_examples'</span>].split(<span class="st">','</span>)</span>
+<span id="cb4-10"><a href="#cb4-10" aria-hidden="true" tabindex="-1"></a>        <span class="cf">if</span> <span class="st">'Virtue'</span> <span class="kw">in</span> row[<span class="st">'categories'</span>]:</span>
+<span id="cb4-11"><a href="#cb4-11" aria-hidden="true" tabindex="-1"></a>            virtue.extend(words)</span>
+<span id="cb4-12"><a href="#cb4-12" aria-hidden="true" tabindex="-1"></a>        <span class="cf">elif</span> <span class="st">'Vice'</span> <span class="kw">in</span> row[<span class="st">'categories'</span>]:</span>
+<span id="cb4-13"><a href="#cb4-13" aria-hidden="true" tabindex="-1"></a>            vice.extend(words)</span>
+<span id="cb4-14"><a href="#cb4-14" aria-hidden="true" tabindex="-1"></a>        <span class="cf">else</span>:</span>
+<span id="cb4-15"><a href="#cb4-15" aria-hidden="true" tabindex="-1"></a>            <span class="bu">print</span>(words)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="cell-output cell-output-stdout">
+<pre><code>['moralidad']
+['moral']
+['etica']
+['etico']
+['principios']
+['valores']
+['bueno', ' buena']
+['bondadoso']
+['correcto']
+['erroneo', ' equivocado', ' incorrecto', ' malo']
+['justicia']
+['fechoria', ' pecado', ' indebido']
+['virtud']
+['vicioso']
+['moralidad']
+['etica']</code></pre>
+</div>
+</div>
+<div class="cell" data-execution_count="52">
+<div class="sourceCode cell-code" id="cb6"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb6-1"><a href="#cb6-1" aria-hidden="true" tabindex="-1"></a>virtue.extend([<span class="st">'moralidad'</span>,<span class="st">'moral'</span>,<span class="st">'etica'</span>,<span class="st">'etico'</span>,<span class="st">'principios'</span>,<span class="st">'valores'</span>,<span class="st">'bueno'</span>,<span class="st">'buena'</span>,<span class="st">'bondadoso'</span>,<span class="st">'correcto'</span>,<span class="st">'justicia'</span>,<span class="st">'virtud'</span>,<span class="st">'moralidad'</span>,<span class="st">'etica'</span>])</span>
+<span id="cb6-2"><a href="#cb6-2" aria-hidden="true" tabindex="-1"></a>vice.extend([<span class="st">'erroneo'</span>,<span class="st">'equivocado'</span>,<span class="st">'incorrecto'</span>,<span class="st">'malo'</span>,<span class="st">'fechoria'</span>,<span class="st">'pecado'</span>,<span class="st">'indebido'</span>,<span class="st">'vicioso'</span>])</span>
+<span id="cb6-3"><a href="#cb6-3" aria-hidden="true" tabindex="-1"></a><span class="co">#Drop duplicates in virtue and vice:</span></span>
+<span id="cb6-4"><a href="#cb6-4" aria-hidden="true" tabindex="-1"></a>virtue <span class="op">=</span> <span class="bu">list</span>(<span class="bu">set</span>(virtue))</span>
+<span id="cb6-5"><a href="#cb6-5" aria-hidden="true" tabindex="-1"></a>vice <span class="op">=</span> <span class="bu">list</span>(<span class="bu">set</span>(vice))</span>
+<span id="cb6-6"><a href="#cb6-6" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb6-7"><a href="#cb6-7" aria-hidden="true" tabindex="-1"></a><span class="bu">print</span>(<span class="st">'vice examples: '</span>, vice[:<span class="dv">10</span>])</span>
+<span id="cb6-8"><a href="#cb6-8" aria-hidden="true" tabindex="-1"></a><span class="bu">print</span>(<span class="st">'virtue examples: '</span>, virtue[:<span class="dv">10</span>])</span>
+<span id="cb6-9"><a href="#cb6-9" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb6-10"><a href="#cb6-10" aria-hidden="true" tabindex="-1"></a><span class="bu">print</span>(<span class="st">'vice length: '</span>, <span class="bu">len</span>(vice))</span>
+<span id="cb6-11"><a href="#cb6-11" aria-hidden="true" tabindex="-1"></a><span class="bu">print</span>(<span class="st">'virtue length: '</span>, <span class="bu">len</span>(virtue))</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="cell-output cell-output-stdout">
+<pre><code>vice examples:  ['mientes', 'extrañando', ' disociable', 'confrontar', 'atrocidad', 'insistir ', 'herido', 'salvaje', 'esceptico', 'pateticos']
+virtue examples:  [' beneficiar', 'maternal', 'seguir', ' ecuanimidad', 'supremacía', 'patriotico', ' justicia', 'refugiar', 'paternal', 'estatus']
+vice length:  1719
+virtue length:  217</code></pre>
+</div>
+</div>
+<p>We have a bigger proportion of vice words which may have an important effect on the tagging task usin KNN</p>
+<div class="cell" data-execution_count="53">
+<div class="sourceCode cell-code" id="cb8"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb8-1"><a href="#cb8-1" aria-hidden="true" tabindex="-1"></a><span class="co">#Load the embeddings to data frame:</span></span>
+<span id="cb8-2"><a href="#cb8-2" aria-hidden="true" tabindex="-1"></a><span class="kw">def</span> load_embeddings(file_path):</span>
+<span id="cb8-3"><a href="#cb8-3" aria-hidden="true" tabindex="-1"></a>    word_to_vec <span class="op">=</span> {}</span>
+<span id="cb8-4"><a href="#cb8-4" aria-hidden="true" tabindex="-1"></a>    <span class="cf">with</span> <span class="bu">open</span>(file_path, <span class="st">'r'</span>, encoding<span class="op">=</span><span class="st">'utf-8'</span>) <span class="im">as</span> <span class="bu">file</span>:</span>
+<span id="cb8-5"><a href="#cb8-5" aria-hidden="true" tabindex="-1"></a>        <span class="cf">for</span> line <span class="kw">in</span> <span class="bu">file</span>:</span>
+<span id="cb8-6"><a href="#cb8-6" aria-hidden="true" tabindex="-1"></a>            values <span class="op">=</span> line.split()</span>
+<span id="cb8-7"><a href="#cb8-7" aria-hidden="true" tabindex="-1"></a>            word <span class="op">=</span> values[<span class="dv">0</span>]</span>
+<span id="cb8-8"><a href="#cb8-8" aria-hidden="true" tabindex="-1"></a>            vector <span class="op">=</span> np.array(values[<span class="dv">1</span>:], dtype<span class="op">=</span><span class="st">'float32'</span>)</span>
+<span id="cb8-9"><a href="#cb8-9" aria-hidden="true" tabindex="-1"></a>            word_to_vec[word] <span class="op">=</span> vector</span>
+<span id="cb8-10"><a href="#cb8-10" aria-hidden="true" tabindex="-1"></a>    <span class="cf">return</span> word_to_vec</span>
+<span id="cb8-11"><a href="#cb8-11" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb8-12"><a href="#cb8-12" aria-hidden="true" tabindex="-1"></a>word_to_vec <span class="op">=</span> load_embeddings(<span class="st">'vectorspol.txt'</span>)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+</div>
+<div class="cell" data-execution_count="28">
+<div class="sourceCode cell-code" id="cb9"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb9-1"><a href="#cb9-1" aria-hidden="true" tabindex="-1"></a>one <span class="op">=</span> <span class="bu">set</span>(vice)</span>
+<span id="cb9-2"><a href="#cb9-2" aria-hidden="true" tabindex="-1"></a>two <span class="op">=</span> <span class="bu">set</span>(neg_words)</span>
+<span id="cb9-3"><a href="#cb9-3" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb9-4"><a href="#cb9-4" aria-hidden="true" tabindex="-1"></a>vice <span class="op">=</span> <span class="bu">list</span>(one.union(two))</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+</div>
+<div class="cell" data-execution_count="29">
+<div class="sourceCode cell-code" id="cb10"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb10-1"><a href="#cb10-1" aria-hidden="true" tabindex="-1"></a><span class="co"># Total words</span></span>
+<span id="cb10-2"><a href="#cb10-2" aria-hidden="true" tabindex="-1"></a><span class="bu">print</span>(<span class="bu">len</span>(vice)<span class="op">+</span><span class="bu">len</span>(virtue))</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="cell-output cell-output-stdout">
+<pre><code>1936</code></pre>
+</div>
+</div>
+<div class="cell" data-execution_count="30">
+<div class="sourceCode cell-code" id="cb12"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb12-1"><a href="#cb12-1" aria-hidden="true" tabindex="-1"></a>words <span class="op">=</span> vice <span class="op">+</span> virtue</span>
+<span id="cb12-2"><a href="#cb12-2" aria-hidden="true" tabindex="-1"></a>words <span class="op">=</span> <span class="bu">set</span>(words)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+</div>
+<hr>
+<p><a href="https://github.com/mellamanelpoeta/mexican-polarization/blob/main/mexican_polarization/Classifier.py#L13" target="_blank" style="float:right; font-size:smaller">source</a></p>
+<section id="classifier" class="level3">
+<h3 class="anchored" data-anchor-id="classifier">Classifier</h3>
+<blockquote class="blockquote">
+<pre><code> Classifier ()</code></pre>
+</blockquote>
+<p>Initialize self. See help(type(self)) for accurate signature.</p>
+<div class="cell" data-execution_count="32">
+<div class="sourceCode cell-code" id="cb14"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb14-1"><a href="#cb14-1" aria-hidden="true" tabindex="-1"></a><span class="kw">def</span> list_to_vec(vice, virtue, word_to_vec):</span>
+<span id="cb14-2"><a href="#cb14-2" aria-hidden="true" tabindex="-1"></a>    <span class="co">'''Returns the vector representation of a list of words in a df'''</span></span>
+<span id="cb14-3"><a href="#cb14-3" aria-hidden="true" tabindex="-1"></a>    data <span class="op">=</span> {<span class="st">'word'</span>: [], <span class="st">'vector'</span>: [], <span class="st">'category'</span>: []}</span>
+<span id="cb14-4"><a href="#cb14-4" aria-hidden="true" tabindex="-1"></a>    <span class="cf">for</span> word <span class="kw">in</span> vice:</span>
+<span id="cb14-5"><a href="#cb14-5" aria-hidden="true" tabindex="-1"></a>        <span class="cf">if</span> word <span class="kw">in</span> word_to_vec.keys():</span>
+<span id="cb14-6"><a href="#cb14-6" aria-hidden="true" tabindex="-1"></a>            data[<span class="st">'word'</span>].append(word)</span>
+<span id="cb14-7"><a href="#cb14-7" aria-hidden="true" tabindex="-1"></a>            data[<span class="st">'vector'</span>].append(word_to_vec[word])</span>
+<span id="cb14-8"><a href="#cb14-8" aria-hidden="true" tabindex="-1"></a>            data[<span class="st">'category'</span>].append(<span class="fl">0.0</span>) <span class="co">#vice will be represented as 0</span></span>
+<span id="cb14-9"><a href="#cb14-9" aria-hidden="true" tabindex="-1"></a>        <span class="cf">else</span>:</span>
+<span id="cb14-10"><a href="#cb14-10" aria-hidden="true" tabindex="-1"></a>            data[<span class="st">'word'</span>].append(word)</span>
+<span id="cb14-11"><a href="#cb14-11" aria-hidden="true" tabindex="-1"></a>            data[<span class="st">'vector'</span>].append(np.nan)</span>
+<span id="cb14-12"><a href="#cb14-12" aria-hidden="true" tabindex="-1"></a>            data[<span class="st">'category'</span>].append(<span class="fl">0.0</span>) </span>
+<span id="cb14-13"><a href="#cb14-13" aria-hidden="true" tabindex="-1"></a>    </span>
+<span id="cb14-14"><a href="#cb14-14" aria-hidden="true" tabindex="-1"></a>    <span class="cf">for</span> word <span class="kw">in</span> virtue:</span>
+<span id="cb14-15"><a href="#cb14-15" aria-hidden="true" tabindex="-1"></a>        <span class="cf">if</span> word <span class="kw">in</span> word_to_vec.keys():</span>
+<span id="cb14-16"><a href="#cb14-16" aria-hidden="true" tabindex="-1"></a>            data[<span class="st">'word'</span>].append(word)</span>
+<span id="cb14-17"><a href="#cb14-17" aria-hidden="true" tabindex="-1"></a>            data[<span class="st">'vector'</span>].append(word_to_vec[word])</span>
+<span id="cb14-18"><a href="#cb14-18" aria-hidden="true" tabindex="-1"></a>            data[<span class="st">'category'</span>].append(<span class="fl">1.0</span>) <span class="co">#virtue will be represented as 1</span></span>
+<span id="cb14-19"><a href="#cb14-19" aria-hidden="true" tabindex="-1"></a>        <span class="cf">else</span>:</span>
+<span id="cb14-20"><a href="#cb14-20" aria-hidden="true" tabindex="-1"></a>            data[<span class="st">'word'</span>].append(word)</span>
+<span id="cb14-21"><a href="#cb14-21" aria-hidden="true" tabindex="-1"></a>            data[<span class="st">'vector'</span>].append(np.nan)</span>
+<span id="cb14-22"><a href="#cb14-22" aria-hidden="true" tabindex="-1"></a>            data[<span class="st">'category'</span>].append(<span class="fl">1.0</span>)</span>
+<span id="cb14-23"><a href="#cb14-23" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb14-24"><a href="#cb14-24" aria-hidden="true" tabindex="-1"></a>    df <span class="op">=</span> pd.DataFrame(data)</span>
+<span id="cb14-25"><a href="#cb14-25" aria-hidden="true" tabindex="-1"></a>    <span class="cf">return</span> df</span>
+<span id="cb14-26"><a href="#cb14-26" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb14-27"><a href="#cb14-27" aria-hidden="true" tabindex="-1"></a>df <span class="op">=</span> list_to_vec(vice,virtue,word_to_vec)</span>
+<span id="cb14-28"><a href="#cb14-28" aria-hidden="true" tabindex="-1"></a>total <span class="op">=</span> <span class="bu">len</span>(df)</span>
+<span id="cb14-29"><a href="#cb14-29" aria-hidden="true" tabindex="-1"></a><span class="bu">print</span>(<span class="st">'Total words: '</span>,total)</span>
+<span id="cb14-30"><a href="#cb14-30" aria-hidden="true" tabindex="-1"></a>df.dropna(inplace<span class="op">=</span><span class="va">True</span>)</span>
+<span id="cb14-31"><a href="#cb14-31" aria-hidden="true" tabindex="-1"></a>df.reset_index(inplace<span class="op">=</span><span class="va">True</span>,drop<span class="op">=</span><span class="va">True</span>)</span>
+<span id="cb14-32"><a href="#cb14-32" aria-hidden="true" tabindex="-1"></a><span class="bu">print</span>(<span class="st">'Total words after dropping NaN: '</span>,<span class="bu">len</span>(df))</span>
+<span id="cb14-33"><a href="#cb14-33" aria-hidden="true" tabindex="-1"></a><span class="bu">print</span>(<span class="st">'∆: '</span>,total<span class="op">-</span><span class="bu">len</span>(df))</span>
+<span id="cb14-34"><a href="#cb14-34" aria-hidden="true" tabindex="-1"></a><span class="bu">print</span>(<span class="st">'∆%:'</span>, <span class="bu">round</span>((total<span class="op">-</span><span class="bu">len</span>(df))<span class="op">/</span>total<span class="op">*</span><span class="dv">100</span>,<span class="dv">2</span>) )</span>
+<span id="cb14-35"><a href="#cb14-35" aria-hidden="true" tabindex="-1"></a>df</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="cell-output cell-output-stdout">
+<pre><code>Total words:  1936
+Total words after dropping NaN:  1015
+∆:  921
+∆%: 47.57</code></pre>
+</div>
+<div class="cell-output cell-output-display" data-execution_count="32">
+<div>
+
+
+<table class="dataframe table table-sm table-striped small" data-quarto-postprocess="true" data-border="1">
+<thead>
+<tr class="header">
+<th data-quarto-table-cell-role="th"></th>
+<th data-quarto-table-cell-role="th">word</th>
+<th data-quarto-table-cell-role="th">vector</th>
+<th data-quarto-table-cell-role="th">category</th>
+</tr>
+</thead>
+<tbody>
+<tr class="odd">
+<td data-quarto-table-cell-role="th">0</td>
+<td>desintegrado</td>
+<td>[0.1409, -0.281743, -0.021933, 0.063962, 0.363...</td>
+<td>0.0</td>
+</tr>
+<tr class="even">
+<td data-quarto-table-cell-role="th">1</td>
+<td>confrontar</td>
+<td>[0.52358, -0.042034, 0.196349, -0.10303, -0.01...</td>
+<td>0.0</td>
+</tr>
+<tr class="odd">
+<td data-quarto-table-cell-role="th">2</td>
+<td>arruina</td>
+<td>[0.440164, -0.520216, 0.281926, 0.316728, 0.11...</td>
+<td>0.0</td>
+</tr>
+<tr class="even">
+<td data-quarto-table-cell-role="th">3</td>
+<td>herido</td>
+<td>[0.435823, -0.5486, 0.689534, 0.293683, 0.1012...</td>
+<td>0.0</td>
+</tr>
+<tr class="odd">
+<td data-quarto-table-cell-role="th">4</td>
+<td>agresiva</td>
+<td>[0.123496, -0.358881, 0.211074, 0.103301, 0.04...</td>
+<td>0.0</td>
+</tr>
+<tr class="even">
+<td data-quarto-table-cell-role="th">...</td>
+<td>...</td>
+<td>...</td>
+<td>...</td>
+</tr>
+<tr class="odd">
+<td data-quarto-table-cell-role="th">1010</td>
+<td>castigo</td>
+<td>[0.300206, 0.182386, -0.113264, 0.146073, -0.6...</td>
+<td>1.0</td>
+</tr>
+<tr class="even">
+<td data-quarto-table-cell-role="th">1011</td>
+<td>etica</td>
+<td>[-0.098628, 0.139114, 0.198292, -0.141415, 0.2...</td>
+<td>1.0</td>
+</tr>
+<tr class="odd">
+<td data-quarto-table-cell-role="th">1012</td>
+<td>ritual</td>
+<td>[0.383331, -0.649981, 0.623369, -0.128588, -0....</td>
+<td>1.0</td>
+</tr>
+<tr class="even">
+<td data-quarto-table-cell-role="th">1013</td>
+<td>empatia</td>
+<td>[-0.079985, 0.049216, -0.123454, 0.110934, 0.0...</td>
+<td>1.0</td>
+</tr>
+<tr class="odd">
+<td data-quarto-table-cell-role="th">1014</td>
+<td>bueno</td>
+<td>[0.717693, 0.01057, 0.502308, 0.411575, -0.427...</td>
+<td>1.0</td>
+</tr>
+</tbody>
+</table>
+
+<p>1015 rows × 3 columns</p>
+</div>
+</div>
+</div>
+</section>
+<section id="vice-words" class="level2">
+<h2 class="anchored" data-anchor-id="vice-words">Vice words</h2>
+<div class="cell" data-execution_count="33">
+<div class="sourceCode cell-code" id="cb16"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb16-1"><a href="#cb16-1" aria-hidden="true" tabindex="-1"></a>df[df[<span class="st">'category'</span>] <span class="op">==</span> <span class="fl">0.0</span>]</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="cell-output cell-output-display" data-execution_count="33">
+<div>
+
+
+<table class="dataframe table table-sm table-striped small" data-quarto-postprocess="true" data-border="1">
+<thead>
+<tr class="header">
+<th data-quarto-table-cell-role="th"></th>
+<th data-quarto-table-cell-role="th">word</th>
+<th data-quarto-table-cell-role="th">vector</th>
+<th data-quarto-table-cell-role="th">category</th>
+</tr>
+</thead>
+<tbody>
+<tr class="odd">
+<td data-quarto-table-cell-role="th">0</td>
+<td>desintegrado</td>
+<td>[0.1409, -0.281743, -0.021933, 0.063962, 0.363...</td>
+<td>0.0</td>
+</tr>
+<tr class="even">
+<td data-quarto-table-cell-role="th">1</td>
+<td>confrontar</td>
+<td>[0.52358, -0.042034, 0.196349, -0.10303, -0.01...</td>
+<td>0.0</td>
+</tr>
+<tr class="odd">
+<td data-quarto-table-cell-role="th">2</td>
+<td>arruina</td>
+<td>[0.440164, -0.520216, 0.281926, 0.316728, 0.11...</td>
+<td>0.0</td>
+</tr>
+<tr class="even">
+<td data-quarto-table-cell-role="th">3</td>
+<td>herido</td>
+<td>[0.435823, -0.5486, 0.689534, 0.293683, 0.1012...</td>
+<td>0.0</td>
+</tr>
+<tr class="odd">
+<td data-quarto-table-cell-role="th">4</td>
+<td>agresiva</td>
+<td>[0.123496, -0.358881, 0.211074, 0.103301, 0.04...</td>
+<td>0.0</td>
+</tr>
+<tr class="even">
+<td data-quarto-table-cell-role="th">...</td>
+<td>...</td>
+<td>...</td>
+<td>...</td>
+</tr>
+<tr class="odd">
+<td data-quarto-table-cell-role="th">896</td>
+<td>melancolia</td>
+<td>[0.100793, 0.07003, -0.095927, -0.148693, -0.4...</td>
+<td>0.0</td>
+</tr>
+<tr class="even">
+<td data-quarto-table-cell-role="th">897</td>
+<td>decepciona</td>
+<td>[0.166685, -0.138134, -0.523206, -0.21429, -0....</td>
+<td>0.0</td>
+</tr>
+<tr class="odd">
+<td data-quarto-table-cell-role="th">898</td>
+<td>pesimismo</td>
+<td>[-0.158406, 0.275918, -0.5823, 0.252241, -0.29...</td>
+<td>0.0</td>
+</tr>
+<tr class="even">
+<td data-quarto-table-cell-role="th">899</td>
+<td>bastarda</td>
+<td>[-0.664042, -0.583431, 0.31007, -0.036613, 0.0...</td>
+<td>0.0</td>
+</tr>
+<tr class="odd">
+<td data-quarto-table-cell-role="th">900</td>
+<td>perversa</td>
+<td>[0.062627, -1.33138, 0.117078, -0.129269, -0.0...</td>
+<td>0.0</td>
+</tr>
+</tbody>
+</table>
+
+<p>901 rows × 3 columns</p>
+</div>
+</div>
+</div>
+</section>
+<section id="virtue-words" class="level2">
+<h2 class="anchored" data-anchor-id="virtue-words">Virtue words</h2>
+<div class="cell" data-execution_count="34">
+<div class="sourceCode cell-code" id="cb17"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb17-1"><a href="#cb17-1" aria-hidden="true" tabindex="-1"></a>df[df[<span class="st">'category'</span>] <span class="op">==</span> <span class="fl">1.0</span>].reset_index(drop<span class="op">=</span><span class="va">True</span>)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="cell-output cell-output-display" data-execution_count="34">
+<div>
+
+
+<table class="dataframe table table-sm table-striped small" data-quarto-postprocess="true" data-border="1">
+<thead>
+<tr class="header">
+<th data-quarto-table-cell-role="th"></th>
+<th data-quarto-table-cell-role="th">word</th>
+<th data-quarto-table-cell-role="th">vector</th>
+<th data-quarto-table-cell-role="th">category</th>
+</tr>
+</thead>
+<tbody>
+<tr class="odd">
+<td data-quarto-table-cell-role="th">0</td>
+<td>maternal</td>
+<td>[0.325435, 0.10564, 0.775151, -0.238141, -0.29...</td>
+<td>1.0</td>
+</tr>
+<tr class="even">
+<td data-quarto-table-cell-role="th">1</td>
+<td>seguir</td>
+<td>[0.929292, 0.084175, -0.086734, 0.031077, -0.4...</td>
+<td>1.0</td>
+</tr>
+<tr class="odd">
+<td data-quarto-table-cell-role="th">2</td>
+<td>patriotico</td>
+<td>[-0.391148, -0.314462, -0.495306, -0.404786, -...</td>
+<td>1.0</td>
+</tr>
+<tr class="even">
+<td data-quarto-table-cell-role="th">3</td>
+<td>paternal</td>
+<td>[-0.164871, -0.043165, 0.527002, -0.032622, -0...</td>
+<td>1.0</td>
+</tr>
+<tr class="odd">
+<td data-quarto-table-cell-role="th">4</td>
+<td>estatus</td>
+<td>[0.195135, 0.061412, 0.429363, 0.509251, -0.02...</td>
+<td>1.0</td>
+</tr>
+<tr class="even">
+<td data-quarto-table-cell-role="th">...</td>
+<td>...</td>
+<td>...</td>
+<td>...</td>
+</tr>
+<tr class="odd">
+<td data-quarto-table-cell-role="th">109</td>
+<td>castigo</td>
+<td>[0.300206, 0.182386, -0.113264, 0.146073, -0.6...</td>
+<td>1.0</td>
+</tr>
+<tr class="even">
+<td data-quarto-table-cell-role="th">110</td>
+<td>etica</td>
+<td>[-0.098628, 0.139114, 0.198292, -0.141415, 0.2...</td>
+<td>1.0</td>
+</tr>
+<tr class="odd">
+<td data-quarto-table-cell-role="th">111</td>
+<td>ritual</td>
+<td>[0.383331, -0.649981, 0.623369, -0.128588, -0....</td>
+<td>1.0</td>
+</tr>
+<tr class="even">
+<td data-quarto-table-cell-role="th">112</td>
+<td>empatia</td>
+<td>[-0.079985, 0.049216, -0.123454, 0.110934, 0.0...</td>
+<td>1.0</td>
+</tr>
+<tr class="odd">
+<td data-quarto-table-cell-role="th">113</td>
+<td>bueno</td>
+<td>[0.717693, 0.01057, 0.502308, 0.411575, -0.427...</td>
+<td>1.0</td>
+</tr>
+</tbody>
+</table>
+
+<p>114 rows × 3 columns</p>
+</div>
+</div>
+</div>
+<div class="cell" data-execution_count="35">
+<div class="sourceCode cell-code" id="cb18"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb18-1"><a href="#cb18-1" aria-hidden="true" tabindex="-1"></a>X <span class="op">=</span> np.array(df[<span class="st">'vector'</span>].tolist())</span>
+<span id="cb18-2"><a href="#cb18-2" aria-hidden="true" tabindex="-1"></a><span class="bu">print</span>(X)</span>
+<span id="cb18-3"><a href="#cb18-3" aria-hidden="true" tabindex="-1"></a>y <span class="op">=</span> np.array(df[<span class="st">'category'</span>].tolist())</span>
+<span id="cb18-4"><a href="#cb18-4" aria-hidden="true" tabindex="-1"></a><span class="bu">print</span>(y)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="cell-output cell-output-stdout">
+<pre><code>[[ 0.1409   -0.281743 -0.021933 ...  0.102292  0.35555  -0.487593]
+ [ 0.52358  -0.042034  0.196349 ...  0.283234  0.035956 -0.422202]
+ [ 0.440164 -0.520216  0.281926 ... -0.381815 -0.04618  -0.25785 ]
+ ...
+ [ 0.383331 -0.649981  0.623369 ...  0.21622  -0.19366  -0.12253 ]
+ [-0.079985  0.049216 -0.123454 ... -0.117718  0.042928 -0.343779]
+ [ 0.717693  0.01057   0.502308 ... -0.425821  0.07154  -0.010166]]
+[0. 0. 0. ... 1. 1. 1.]</code></pre>
+</div>
+</div>
+<div class="cell" data-execution_count="50">
+<div class="sourceCode cell-code" id="cb20"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb20-1"><a href="#cb20-1" aria-hidden="true" tabindex="-1"></a>X_train, X_test, y_train, y_test <span class="op">=</span> train_test_split(df[<span class="st">'vector'</span>], df[<span class="st">'category'</span>], test_size<span class="op">=</span><span class="fl">0.1</span>, random_state<span class="op">=</span><span class="dv">21</span>,stratify<span class="op">=</span>df[<span class="st">'category'</span>])</span>
+<span id="cb20-2"><a href="#cb20-2" aria-hidden="true" tabindex="-1"></a>X_train <span class="op">=</span> X_train.to_list()</span>
+<span id="cb20-3"><a href="#cb20-3" aria-hidden="true" tabindex="-1"></a>knn <span class="op">=</span> KNeighborsClassifier(n_neighbors<span class="op">=</span><span class="dv">3</span>)</span>
+<span id="cb20-4"><a href="#cb20-4" aria-hidden="true" tabindex="-1"></a>knn.fit(X_train, y_train)</span>
+<span id="cb20-5"><a href="#cb20-5" aria-hidden="true" tabindex="-1"></a>X_test <span class="op">=</span> X_test.to_list()</span>
+<span id="cb20-6"><a href="#cb20-6" aria-hidden="true" tabindex="-1"></a><span class="bu">print</span>(<span class="bu">round</span>(knn.score(X_test, y_test),<span class="dv">3</span>))</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="cell-output cell-output-stdout">
+<pre><code>0.922</code></pre>
+</div>
+</div>
+<div class="cell" data-execution_count="51">
+<div class="sourceCode cell-code" id="cb22"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb22-1"><a href="#cb22-1" aria-hidden="true" tabindex="-1"></a>test_accuracies <span class="op">=</span> {}</span>
+<span id="cb22-2"><a href="#cb22-2" aria-hidden="true" tabindex="-1"></a>neighbours <span class="op">=</span> <span class="bu">range</span>(<span class="dv">1</span>, <span class="dv">30</span>)</span>
+<span id="cb22-3"><a href="#cb22-3" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb22-4"><a href="#cb22-4" aria-hidden="true" tabindex="-1"></a><span class="cf">for</span> neighbour <span class="kw">in</span> neighbours:</span>
+<span id="cb22-5"><a href="#cb22-5" aria-hidden="true" tabindex="-1"></a>    knn <span class="op">=</span> KNeighborsClassifier(n_neighbors<span class="op">=</span>neighbour)</span>
+<span id="cb22-6"><a href="#cb22-6" aria-hidden="true" tabindex="-1"></a>    knn.fit(X_train, y_train)</span>
+<span id="cb22-7"><a href="#cb22-7" aria-hidden="true" tabindex="-1"></a>    test_accuracies[neighbour] <span class="op">=</span> knn.score(X_test, y_test)</span>
+<span id="cb22-8"><a href="#cb22-8" aria-hidden="true" tabindex="-1"></a>    </span>
+<span id="cb22-9"><a href="#cb22-9" aria-hidden="true" tabindex="-1"></a>plt.figure(figsize<span class="op">=</span>(<span class="dv">8</span>,<span class="dv">6</span>))</span>
+<span id="cb22-10"><a href="#cb22-10" aria-hidden="true" tabindex="-1"></a>plt.title(<span class="st">'KNN Accuracy: Varying number of neighbours'</span>)</span>
+<span id="cb22-11"><a href="#cb22-11" aria-hidden="true" tabindex="-1"></a>plt.plot(<span class="bu">list</span>(test_accuracies.keys()), <span class="bu">list</span>(test_accuracies.values()))</span>
+<span id="cb22-12"><a href="#cb22-12" aria-hidden="true" tabindex="-1"></a>plt.legend()</span>
+<span id="cb22-13"><a href="#cb22-13" aria-hidden="true" tabindex="-1"></a>plt.xlabel(<span class="st">'Number of neighbours'</span>)</span>
+<span id="cb22-14"><a href="#cb22-14" aria-hidden="true" tabindex="-1"></a>plt.ylabel(<span class="st">'Accuracy'</span>)</span>
+<span id="cb22-15"><a href="#cb22-15" aria-hidden="true" tabindex="-1"></a>plt.show()</span>
+<span id="cb22-16"><a href="#cb22-16" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb22-17"><a href="#cb22-17" aria-hidden="true" tabindex="-1"></a><span class="bu">print</span>(<span class="st">'Best accuracy and number of neighbours: '</span>, <span class="bu">max</span>(test_accuracies.items(), key<span class="op">=</span><span class="kw">lambda</span> x: x[<span class="dv">1</span>]))</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="cell-output cell-output-stderr">
+<pre><code>No artists with labels found to put in legend.  Note that artists whose label start with an underscore are ignored when legend() is called with no argument.</code></pre>
+</div>
+<div class="cell-output cell-output-display">
+<p><img src="02_classifier_files/figure-html/cell-16-output-2.png" class="img-fluid"></p>
+</div>
+<div class="cell-output cell-output-stdout">
+<pre><code>Best accuracy and number of neighbours:  (7, 0.9313725490196079)</code></pre>
+</div>
+</div>
+<section id="using-the-model-to-tag-adjectives-found-on-media" class="level3">
+<h3 class="anchored" data-anchor-id="using-the-model-to-tag-adjectives-found-on-media">Using the model to tag adjectives found on media*</h3>
+<blockquote class="blockquote">
+<p>Issues to be solved…</p>
+</blockquote>
+<div class="cell" data-execution_count="37">
+<div class="sourceCode cell-code" id="cb25"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb25-1"><a href="#cb25-1" aria-hidden="true" tabindex="-1"></a>knn <span class="op">=</span> KNeighborsClassifier(n_neighbors<span class="op">=</span><span class="dv">5</span>)</span>
+<span id="cb25-2"><a href="#cb25-2" aria-hidden="true" tabindex="-1"></a>knn.fit(X,y)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="cell-output cell-output-display" data-execution_count="37">
+<style>#sk-container-id-1 {color: black;}#sk-container-id-1 pre{padding: 0;}#sk-container-id-1 div.sk-toggleable {background-color: white;}#sk-container-id-1 label.sk-toggleable__label {cursor: pointer;display: block;width: 100%;margin-bottom: 0;padding: 0.3em;box-sizing: border-box;text-align: center;}#sk-container-id-1 label.sk-toggleable__label-arrow:before {content: "▸";float: left;margin-right: 0.25em;color: #696969;}#sk-container-id-1 label.sk-toggleable__label-arrow:hover:before {color: black;}#sk-container-id-1 div.sk-estimator:hover label.sk-toggleable__label-arrow:before {color: black;}#sk-container-id-1 div.sk-toggleable__content {max-height: 0;max-width: 0;overflow: hidden;text-align: left;background-color: #f0f8ff;}#sk-container-id-1 div.sk-toggleable__content pre {margin: 0.2em;color: black;border-radius: 0.25em;background-color: #f0f8ff;}#sk-container-id-1 input.sk-toggleable__control:checked~div.sk-toggleable__content {max-height: 200px;max-width: 100%;overflow: auto;}#sk-container-id-1 input.sk-toggleable__control:checked~label.sk-toggleable__label-arrow:before {content: "▾";}#sk-container-id-1 div.sk-estimator input.sk-toggleable__control:checked~label.sk-toggleable__label {background-color: #d4ebff;}#sk-container-id-1 div.sk-label input.sk-toggleable__control:checked~label.sk-toggleable__label {background-color: #d4ebff;}#sk-container-id-1 input.sk-hidden--visually {border: 0;clip: rect(1px 1px 1px 1px);clip: rect(1px, 1px, 1px, 1px);height: 1px;margin: -1px;overflow: hidden;padding: 0;position: absolute;width: 1px;}#sk-container-id-1 div.sk-estimator {font-family: monospace;background-color: #f0f8ff;border: 1px dotted black;border-radius: 0.25em;box-sizing: border-box;margin-bottom: 0.5em;}#sk-container-id-1 div.sk-estimator:hover {background-color: #d4ebff;}#sk-container-id-1 div.sk-parallel-item::after {content: "";width: 100%;border-bottom: 1px solid gray;flex-grow: 1;}#sk-container-id-1 div.sk-label:hover label.sk-toggleable__label {background-color: #d4ebff;}#sk-container-id-1 div.sk-serial::before {content: "";position: absolute;border-left: 1px solid gray;box-sizing: border-box;top: 0;bottom: 0;left: 50%;z-index: 0;}#sk-container-id-1 div.sk-serial {display: flex;flex-direction: column;align-items: center;background-color: white;padding-right: 0.2em;padding-left: 0.2em;position: relative;}#sk-container-id-1 div.sk-item {position: relative;z-index: 1;}#sk-container-id-1 div.sk-parallel {display: flex;align-items: stretch;justify-content: center;background-color: white;position: relative;}#sk-container-id-1 div.sk-item::before, #sk-container-id-1 div.sk-parallel-item::before {content: "";position: absolute;border-left: 1px solid gray;box-sizing: border-box;top: 0;bottom: 0;left: 50%;z-index: -1;}#sk-container-id-1 div.sk-parallel-item {display: flex;flex-direction: column;z-index: 1;position: relative;background-color: white;}#sk-container-id-1 div.sk-parallel-item:first-child::after {align-self: flex-end;width: 50%;}#sk-container-id-1 div.sk-parallel-item:last-child::after {align-self: flex-start;width: 50%;}#sk-container-id-1 div.sk-parallel-item:only-child::after {width: 0;}#sk-container-id-1 div.sk-dashed-wrapped {border: 1px dashed gray;margin: 0 0.4em 0.5em 0.4em;box-sizing: border-box;padding-bottom: 0.4em;background-color: white;}#sk-container-id-1 div.sk-label label {font-family: monospace;font-weight: bold;display: inline-block;line-height: 1.2em;}#sk-container-id-1 div.sk-label-container {text-align: center;}#sk-container-id-1 div.sk-container {/* jupyter's `normalize.less` sets `[hidden] { display: none; }` but bootstrap.min.css set `[hidden] { display: none !important; }` so we also need the `!important` here to be able to override the default hidden behavior on the sphinx rendered scikit-learn.org. See: https://github.com/scikit-learn/scikit-learn/issues/21755 */display: inline-block !important;position: relative;}#sk-container-id-1 div.sk-text-repr-fallback {display: none;}</style><div id="sk-container-id-1" class="sk-top-container"><div class="sk-text-repr-fallback"><pre>KNeighborsClassifier()</pre><b>In a Jupyter environment, please rerun this cell to show the HTML representation or trust the notebook. <br>On GitHub, the HTML representation is unable to render, please try loading this page with nbviewer.org.</b></div><div class="sk-container" hidden=""><div class="sk-item"><div class="sk-estimator sk-toggleable"><input class="sk-toggleable__control sk-hidden--visually" id="sk-estimator-id-1" type="checkbox" checked=""><label for="sk-estimator-id-1" class="sk-toggleable__label sk-toggleable__label-arrow">KNeighborsClassifier</label><div class="sk-toggleable__content"><pre>KNeighborsClassifier()</pre></div></div></div></div></div>
+</div>
+</div>
+<div class="cell" data-execution_count="38">
+<div class="sourceCode cell-code" id="cb26"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb26-1"><a href="#cb26-1" aria-hidden="true" tabindex="-1"></a><span class="co">#Adjs found in comments using spaCy library:</span></span>
+<span id="cb26-2"><a href="#cb26-2" aria-hidden="true" tabindex="-1"></a>adjs <span class="op">=</span> <span class="bu">set</span>()</span>
+<span id="cb26-3"><a href="#cb26-3" aria-hidden="true" tabindex="-1"></a><span class="cf">with</span> <span class="bu">open</span>(<span class="st">'adjs_comments.txt'</span>, <span class="st">'r'</span>, encoding<span class="op">=</span><span class="st">'utf-8'</span>) <span class="im">as</span> <span class="bu">file</span>:</span>
+<span id="cb26-4"><a href="#cb26-4" aria-hidden="true" tabindex="-1"></a>    <span class="cf">for</span> line <span class="kw">in</span> <span class="bu">file</span>:</span>
+<span id="cb26-5"><a href="#cb26-5" aria-hidden="true" tabindex="-1"></a>        adjs.add(line.strip())</span>
+<span id="cb26-6"><a href="#cb26-6" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb26-7"><a href="#cb26-7" aria-hidden="true" tabindex="-1"></a>adjs <span class="op">=</span> <span class="bu">list</span>(adjs)</span>
+<span id="cb26-8"><a href="#cb26-8" aria-hidden="true" tabindex="-1"></a><span class="bu">print</span>(adjs[:<span class="dv">10</span>])</span>
+<span id="cb26-9"><a href="#cb26-9" aria-hidden="true" tabindex="-1"></a><span class="bu">print</span>(<span class="bu">len</span>(adjs))</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="cell-output cell-output-stdout">
+<pre><code>['pobresprianistas', 'pri', 'verdaderas', 'agual', 'mientes', 'nesita', 'hermosa', 'fcg', 'lorenzo', 'prmitido']
+1642</code></pre>
+</div>
+</div>
+<div class="cell" data-execution_count="39">
+<div class="sourceCode cell-code" id="cb28"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb28-1"><a href="#cb28-1" aria-hidden="true" tabindex="-1"></a><span class="co">#Adjs from comments but not in words:</span></span>
+<span id="cb28-2"><a href="#cb28-2" aria-hidden="true" tabindex="-1"></a>adjs_set <span class="op">=</span> <span class="bu">set</span>(adjs)</span>
+<span id="cb28-3"><a href="#cb28-3" aria-hidden="true" tabindex="-1"></a>diference <span class="op">=</span> adjs_set.difference(words)</span>
+<span id="cb28-4"><a href="#cb28-4" aria-hidden="true" tabindex="-1"></a><span class="bu">print</span>(<span class="bu">len</span>(diference))</span>
+<span id="cb28-5"><a href="#cb28-5" aria-hidden="true" tabindex="-1"></a><span class="bu">print</span>(diference)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="cell-output cell-output-stdout">
+<pre><code>1538
+{'pobresprianistas', 'pri', 'verdaderas', 'agual', 'nesita', 'hermosa', 'fcg', 'lorenzo', 'prmitido', 'odiado', 'curado', 'neutrales', 'involucrado', 'malditos', 'comercial', 'bende', 'caros', 'electorales', 'mismopero', 'mantenidoscorruptos', 'evitense', 'demas', 'robado', 'exacta', 'aferrado', 'paraditos', 'privilegios', 'pejistas', 'impotente', 'entoloachado', 'pirque', 'sencilla', 'alcaldias', 'campesino', 'mudos', 'by', 'limpia', 'raterossalta', 'incondicionales', 'saqueado', 'opositores', 'ocicon', 'cortos', 'despotas', 'secuestrado', 'calmado', 'profesional', 'deberia', 'capitalista', 'bandido', 'vestidas', 'importantes', 'encubierto', 'fumastes', 'conscientes', 'fregado', 'necesitados', 'amolado', 'ables', 'diputados', 'lleno', 'politicas', 'institucionalizados', 'grandes', 'cercania', 'caro', 'mmmdas', 'interno', 'm@men', 'intachable', 'pagadas', 'alimentos', 'entero', 'apestosas', 'apasear', 'maya', 'creibles', 'pobrecitos', 'basica', 'corrptos', 'trabajadoras', 'veracruz', 'incompetentesmediocres', 'poqiquitos', 'exelente', 'biendolos', 'democratico', 'elbolsillo', 'arrastrados', 'votado', 'publicos', 'salio', 'elhechalo', 'veznobqueda', 'obrigatoria', 'contras', 'estafador', 'engreidos', 'asta', 'llenas', 'agresivos', 'enquistados', 'ormigs', 'honestos', 'actual', 'qnomme', 'ligera', 'representates', 'hechoellos', 'pagado', 'podridos', 'verdespenejo', 'discriminatorio', 'foxcada', 'mediocre', 'primeros', 'espanola', 'soltado', 'unificadorno', 'minima', 'idiotizado', 'municipal', 'peorcito', 'pobres', 'marihuanol', 'hermosos', 'mochada', 'adinerados', 'ningun', 'malevolos', 'acsrreados', 'pertinentes', 'rosas', 'confiable', 'inepto', 'senor', 'industriales', 'honesta', 'maiceado', 'prestigiada', 'debilito', 'privilegiada', 'nazi', 'quemados', 'propuesta', 'adulta', 'decual', 'avbio', 'largo', 'vitacilina', 'oceanica', 'fraudes', 'asquerosasvendidos', 'acrarreador', 'elctoral', 'aferrados', 'insensibles', 'rapaz', 'indibiduo', 'viejio', 'traido', 'demexico', 'igualvendidos', 'sahagun', 'pueblosolo', 'envidiosote', 'lozonso', 'defendidos', 'corta', 'miserables', 'propiaarriba', 'miradas', 'saqueadores', 'acarriada', 'defendiendolos', 'detocs', 'afectada', 'obligados', 'real', 'maldita', 'devores', 'politica', 'europeo', 'huevones', 'unido', 'federal', 'siega', 'cagadas', 'stpdo', 'sicaro', 'graciosos', 'sumado', 'vendepatrias', 'arrugado', 'ratasvendidos', 'trabajador', 'plena', 'quierenestos', 'independientes', 'hijos', 'atarantado', 'mendigos', 'superinteligentisimo', 'media', 'millonarios', 'jamas', 'lindo', 'vivos', 'beneficiados', 'junta', 'purita', 'seco', 'manipulados', 'criado', 'acusalo', 'desinflado', 'legales', 'incondicional', 'quesadapues', 'snganos', 'ofenza', 'quretino', 'grabadora', 'seria', 'plagada', 'presidentes', 'decomiso', 'civil', 'atraves', 'familiar', 'anti', 'avalado', 'partidos', 'increible', 'lunatico', 'crecida', 'electronicos', 'mejor', 'institucionlos', 'facil', 'jajajaja', 'hombreeso', 'libre', 'enganada', 'maximo', 'estadista', 'asustados', 'garrapatas', 'ofendidos', 'verde', 'estepincheviejodecrepitoyanadamasleqedololoco', 'chupado', 'grande', 'alborotada', 'acarreado', 'absoluta', 'mariguanol', 'perversos', 'nuevos', 'enemigos', 'primera', 'dura', 'nueva', 'vidente', 'callado', 'jjjjjjjj', 'amlolo', 'amucha', 'tranquilo', 'mantenido', 'listo', 'ajena', 'huuuleeeerooooo', 'elegido', 'rafas', 'autentico', 'hueca', 'dominguero', 'obradoristas', 'buey', 'pequena', 'seguros', 'adineradas', 'relajate', 'fraudulentas', 'guasolina', 'masoquista', 'hobrador', 'extraordinaria', 'perros', 'lolita', 'decentes', 'anemonas', 'sras', 'bibidores', 'electoral', 'afecto', 'empresariales', 'descansa', 'analfabeta', 'agrada', 'alla', 'especial', 'gusanos', 'quemado', 'interesante', 'delicuentes', 'corruptospor', 'herario', 'secuaces', 'ledio', 'neoliberal', 'venenosas', 'holgazanes', 'punados', 'protejidos', 'sociales', 'valioso', 'mandenidos', 'escalteado', 'tisnaditas', 'tiznado', 'lado', 'personal', 'japonesa', 'cerrada', 'pica', 'jajajaaaaaa', 'pobrecito', 'malas', 'carajos', 'acarreada', 'tranzas', 'llena', 'fuerte', 'paniaguados', 'contradictoriosesas', 'servil', 'srvicente', 'usada', 'deseoso', 'actually', 'comun', 'miedosos', 'parcial', 'indefendible', 'alta', 'muertos', 'locote', 'personales', 'publico', 'inteligentes', 'licenciado', 'natural', 'mundial', 'comparado', 'pallaso', 'engana', 'pruevas', 'callen', 'hambriados', 'popular', 'sinicos', 'chente', 'desbocados', 'incongruente', 'hipocritas', 'agradecida', 'sueldos', 'repudiaria', 'demostrado', 'universal', 'corruptotes', 'demacrado', 'quesada', 'llo', 'dirigido', 'cambiado', 'sabio', 'diferente', 'stiercol', 'solita', 'comosea', 'urgentemente', 'amargadas', 'conplan', 'marranos', 'domesticopobrecitas', 'tramposo', 'vacios', 'mariguas', 'enserio', 'cacomiztles', 'ricos', 'trampososineptos', 'descanse', 'curioso', 'dichos', 'describire', 'maruiguas', 'mera', 'corruption', 'asustas', 'amlono', 'comprados', 'lectorapuro', 'nacional', 'mana', 'verguenzasaludos', 'chole', 'curruptoseso', 'putrefacto', 'hidratados', 'desfasado', 'contundente', 'desapareceresa', 'justas', 'vendidosfuera', 'invasivo', 'excelente', 'morena', 'vjejo', 'duenos', 'disfrazados', 'danado', 'advenedizos', 'ricachones', 'plenos', 'enfermisas', 'inutiles', 'mediana', 'simuladores', 'nacidos', 'reacionea', 'tremens', 'iluso', 'pasadas', 'asolear', 'tercera', 'vista', 'yegaria', 'hartos', 'alto', 'rica', 'verdulera', 'enfada', 'inmensa', 'amexico', 'chiquitos', 'ntro', 'viejo', 'lopitos', 'ponte', 'justos', 'tapendejo', 'renovada', 'vendida', 'poquita', 'maliditos', 'corruptosmercenarios', 'blanquitos', 'vivo', 'baboso', 'humilde', 'menoria', 'delicados', 'decia', 'hocicon', 'endeudado', 'organica', 'pendesta', 'quedaria', 'porinfeliz', 'corruptosy', 'q', 'razonable', 'mentales', 'humanas', 'corruptasos', 'riquillo', 'enjuicien', 'compares', 'alucines', 'importante', 'quieroen', 'solosomos', 'preocupados', 'obvio', 'pitufos', 'electrica', 'acarreas', 'enterados', 'finos', 'inmorales', 'incompetentes', 'vividora', 'harias', 'anciano', 'apatridas', 'chingandoy', 'buen', 'efectiva', 'razistas', 'experto', 'neuliberales', 'corructos', 'acusador', 'defraudadores', 'lanbiscomes', 'tranquila', 'llamado', 'perfecto', 'laserado', 'simple', 'atomica', 'quioere', 'checheas', 'pasados', 'arreglados', 'administradorcillo', 'planeado', 'derecho', 'estupidos', 'participado', 'ratificado', 'mentado', 'marranadas', 'sandeces', 'aaaay', 'severas', 'obligatorio', 'gatos', 'indignos', 'duermete', 'pocas', 'osico', 'cauarta', 'vividor', 'elitistas', 'lencho', 'impuestos', 'arrastrada', 'tiranos', 'propia', 'carino', 'importantisima', 'trasnochado', 'muchisimo', 'burradas', 'armada', 'chistosito', 'cansados', 'familiares', 'estiempo', 'tactica', 'viejas', 'pagada', 'emitidas', 'perotodos', 'aprovechados', 'inevendido', 'clasista', 'narcoas', 'gran', 'infelices', 'ciudadana', 'fertilizante', 'contados', 'claro', 'maiceadas', 'prianistas', 'diles', 'convencidos', 'inteligente', 'rociados', 'verdadera', 'voluntaria', 'etcetera', 'iguales', 'ocupado', 'cansado', 'cobardes', 'askerosas', 'extranjeros', 'complices', 'borregos', 'economica', 'ardido', 'pendejas', 'eline', 'sinico', 'senal', 'america', 'qureo', 'oficial', 'ancianos', 'energetica', 'manoseada', 'engrandecerlos', 'criminales', 'cruptos', 'marguas', 'indescriptibles', 'total', 'cuantos', 'cuscos', 'idiotisado', 'maliada', 'lacras', 'extrema', 'politiqueros', 'mantenidos', 'desfraudado', 'incuriptible', 'amlooo', 'lkenadera', 'antipatriotas', 'chspm', 'ala', 'lencha', 'acareados', 'd', 'irrefutable', 'padres', 'mega', 'blanco', 'etc', 'tipica', 'harto', 'obrera', 'llores', 'friegas', 'orgulloso', 'encabezado', 'corrptisimo', 'muneco', 'elegantes', 'chavorruco', 'sanganos', 'mariguano', 'cabada', 'minimos', 'ridiculos', 'tinoso', 'parientes', 'pagariamos', 'leido', 'viejillo', 'fuelra', 'innecesarios', 'reciente', 'abtidemocraticos', 'defensor', 'corruptelas', 'chapeados', '@uuuuuu', 'proximos', 'omosexual', 'desias', 'necesario', 'positivos', 'plurinominal', 'llenos', 'incomparable', 'intocables', 'doble', 'srpresidente', 'zanganos', 'primero', 'apistelentes', 'saludable', 'nadamas', 'tespetosox', 'aaaarranquense', 'espresidente', 'lavadora(de', 'largas', 'puras', 'rrequerido', 'rateros', 'sumbado', 'mexico', 'pios', 'dadeberia', 'veneficio', 'ganado', 'mieda', 'peca', 'tendenciosas', 'suave', 'cochinada', 'riquillos', 'hade', 'quedado', 'humanitario', 'sinsanoso', 'inestable', 'chingnd', 'pienza', 'vomitivos', 'nesesitamos', 'compradas', 'preso', 'bajo', 'usava', 'apegado', 'auspiciadas', 'imparciales', 'an', 'chin', 'pacifica', 'chachalaco', 'manosos', 'borracho', 'locuas', 'calladito', 'indeseables', 'inmoral', 'tenido', 'nuevas', 'tirado', 'petroleras', 'partodos', 'extrano', 'senil', 'hambrientos', 'compatriotasviva', 'jajakaj', 'l', 'seve', 'puros', 'crrupto', 'igualado', 'vividores', 'conocido', 'rratotassinberguensas', 'paracitos', 'sentados', 'mas', 'recaudados', 'hhuu', 'tambien', 'tremendo', 'ardida', 'valiosas', 'chentebotitas', 'minerales', 'cuasta', 'cochinos', 'integrantes', 'parasitos', 'pequeno', 'aleccionados', 'comprendanlo', 'sheet', 'qeremos', 'ferrocarriles', 'adivino', 'marihuaniado', 'plana', 'felices', 'consec', 'clasistas', 'simexicanos', 'megacorruptos', 'limpio', 'impotenciaque', 'nonesesita', 'trabajadora', 'inquietos', 'lamvehuvos', 'desgrasiado', 'jodidos', 'desvergonzados', 'mayoria', 'democracias', 'afectado', 'valiente', 'viendoesta', 'drogado', 'sinonimos', 'nosotras', 'guero', 'presidentecon', 'delincuentes', 'suficiente', 'traicionera', 'incompetente', 'ternurita', 'pulpos', 'marihuano', 'deveria', 'chacales', 'capaces', 'desgraciados', 'preciopor', 'millonario', 'mariguana', 'tonterias', 'vendidosy', 'gorda', 'caracol', 'respetoviva', 'merecido', 'veandido', 'ratotas', 'nefastas', 'rico', 'democracia', 'bonita', 'verdaderos', 'vejestorios', 'engordado', 'maravilloso', 'pensionados', 'cierto', 'bandidos', 'comprobado', 'rrs', 'electoreros', 'lgualmente', 'prianrede', 'psiquiatrico', 'indigenas', 'pelado', 'ahj', 'unidos', 'nefastos', 'quezada', 'secuestrada', 'enriquecidos', 'cronico', 'corruptisimo', 'tocado', 'prepotentes', 'alcansaria', 'presente', 'acarreados', 'delirante', 'transparente', 'contentos', 'simbergyensas', 'sakeadores', 'chayoteros', 'clarito', 'falsa', 'mismo', 'corruptas', 'vergonzoso', 'coructos', 'amanada', 'conocidos', 'unico', 'civiles', 'incurruptibles', 'senores', 'humano', 'sincero', 'logrosesto', 'ultimo', 'firmes', 'borrachales', 'sinsos', 'marihuana', 'hacersolo', 'compras', 'propios', 'desmemoriados', 'rata', 'unica', 'antidemocratas', 'judicial', 'racistas', 'computadoras', 'mensuales', 'ocultas', 'zocalo', 'cagada', 'serian', 'cubano', 'historico', 'aparescas', 'tronado', 'presidencial', 'agradecidos', 'malditas', 'respetoeste', 'acarrados', 'viva', 'metidos', 'solitos', 'mayor', 'mojadas', 'sordos', 'sencillo', 'urgente', 'verboviva', 'varcel', 'dichola', 'riquito', 'ineptos', 'meadas', 'sucios', 'visto', 'alrevez', 'peo', 'inecesario', 'duro', 'conveneciera', 'campantes', 'excesivos', 'umillados', 'gubernamental', 'nuevo', 'dadiva', 'sentidas', 'nesesitados', 'remoras', 'prianmc', 'inmenso', 'desarrollado', 'corrupto', 'consejero', 'cilencio', 'enojados', 'agradecido', 'ineficiente', 'aburre', 'acompano', 'afectados', 'claras', 'ademas', 'unicos', 'flojos', 'comodinos', 'defendible', 'maligna', 'oportunistas', 'derrotados', 'prieta', 'rapido', 'fecales', 'obrador', 'pelados', 'aereas', 'chupeteadores', 'junto', 'hozico', 'derrotada', 'ivas', 'dios', 'chochea', 'atina', 'parados', 'diria', 'ultima', 'favorecida', 'ex', 'dictador', 'marhuana', 'nesecidada', 'mandilon', 'ponzonosas', 'ine-scrupulosos', 'contrario', 'maltratado', 'asquerosos', 'obsesionado', 'genial', 'larga', 'hdschm', 'digno', 'cerebral', 'insaciables', 'mexicana', 'viejito', 'voluntario', 'amanados', 'huachicolero', 'ensucia', 'transtornado', 'entregista', 'comprada', 'apatrida', 'ladras', 'nuesteos', 'motorolo', 'ultrajada', 'huachicoleras', 'mafiosos', 'opcs', 'laca', 'irrespetuoso', 'coruptos', 'patriastraidores', 'naturales', 'desvergonzado', 'sera', 'vien', 'sandijuelas', 'malvados', 'ultimos', 'operado', 'lamentable', 'pequenos', 'recibido', 'proximo', 'digna', 'hermoso', 'abusivos', 'esquizofrenico', 'encontraras', 'comprueve', 'ratera', 'traicioneros', 'basicas', 'jajajajajjajajajjaajajajjjaajajjaano', 'lorensito', 'economico', 'chulo', 'acabeotros', 'cascarrabias', 'fascistas', 'autoritarios', 'chistoso', 'nopuedo', 'sennofox', 'rrrrratas', 'ficticias', 'precaria', 'malparridos', 'ardidos', 'cdmx', 'estupido', 'querido', 'mendigo', 'pregunteles', 'posible', 'hechos', 'tarugada', 'vicentico', 'vestida', 'martita', 'cuarta', 'hables', 'empresarial', 'botudo', 'masivo', 'traicionero', 'ardor', 'infinitas', 'traicioneras', 'mayores', 'bajos', 'vandidos', 'mariguanete', 'mendiga', 'grandioso', 'iriapero', 'alito', 'alucinado', 'callados', 'buenas', 'seno', 'amloasi', 'cundo', 'infames', 'pagados', 'neoliberales', 'autonomo', 'dekrepito', 'estadodas', 'superiores', 'economicos', 'vende-patrias', 'culeros', 'sometida', 'proximas', 'hbldr', 'oilo', 'pesadas', 'ironia', 'logrado', 'apokono', 'conq', 'italiano', 'mariguanay', 'loquito', 'reales', 'corruptosvendidos', 'ta', 'serviles', 'msrigua', 'grandecito', 'ratasss', 'injustos', 'enves', 'descarados', 'pasado', 'sientes', 'parasito', 'juridica', 'solas', 'pcasi', 'indicado', 'ignorantes', 'playeras', 'incomada', 'maaaa', 'humildes', 'fumovisente', 'solo', 'vacelina', 'cercano', 'jajajajajaja', 'ahihasta', 'fieles', 'humanista', 'desaparecete', 'toncho', 'insecto', 'callese', 'pusilanimes', 'patras', 'bitacilina', 'encarcelado', 'dueno', 'coludidos', 'guaruras', 'generosos', 'sano', 'fuchi', 'menor', 'camisas', 'llevenll', 'agancaso', 'facistas', 'sumidos', 'corajes', 'ventajosos', 'guaraguano', 'atras', 'escandalosa', 'habidos', 'agredidos', 'queles', 'politico', 'msriguana', 'mediera', 'sedientos', 'hambreados', 'molestes', 'maiceados', 'invito', 'prianista', 'combinado', 'ajeno', 'paso', 'torta', 'marihuas', 'acabado', 'expresidentes', 'ajenas', 'buenoaestecabrocontodorespetosiesqueselomeresrcuandolevanaquitarloquerobo', 'botuda', 'archirequetecontracorruptos', 'miadas', 'satrapa', 'convocados', 'psicopata', 'esbirros', 'inconforme', 'inferiores', 'amikos', 'tramposos', 'oyy', 'legitimo', 'calificativos', 'populacho', 'metodos', 'poderosos', 'mesmamente', 'putridos', 'usurpadores', 'autonomosque', 'hdch', 'buenos', 'retrasados', 'lindos', 'cerrados', 'nacionales', 'mexicanos', 'baloyan', 'bedidos', 'marig', 'amargo', 'descritos', 'raaaaaaaaatas', 'casiques', 'chentito', 'entrevistados', 'anterior', 'amlo', 'blanca', 'organizada', 'puritito', 'politicos', 'mafiososhijos', 'fortalecio', 'simulada', 'mentirosos', 'verdad', 'patriota', 'cm', 'conveniente', 'publicas', 'beneficiodos', 'natal', 'unacoca', 'jente', 'desconectado', 'nacido', 'vendidas', 'empresarios', 'incluida', 'seguidos', 'burocratas', 'cimo', 'repartes', 'celular', 'empleado', 'primer', 'borregada', 'cinicos', 'libres', 'tapaderas', 'autonomos', 'puntadas', 'remordimieno', 'tontosvendidos', 'electoraly', 'oscurito', 'sicarios', 'tristes', 'guevones', 'informados', 'racista', 'cascaraviasyonosavequeaserniquedecircon', 'conchudos', 'ladrarladrar', 'gentemuchos', 'equivocas', 'enesima', 'bandejo', 'huevosfuera', 'peleles', 'nuestreo', 'derecha', 'plurinominales', 'despreciados', 'tercer', 'mexicoviva', 'queridisimo', 'suturado', 'chachalaca', 'queria', 'mental', 'estafadores', 'antiguo', 'frutsi', 'vendidos', 'tesla', 'famosos', 'sinverhuenzas', 'corruptos', 'pendientes', 'bloqueado', 'acostumbradas', 'viboras', 'saludos', 'anteriores', 'controlado', 'corruptosfuera', 'mafia', 'enganados', 'aguadas', 'trapacerias', 'hechoahora', 'sintetica', 'basto', 'postizos', 'futuro', 'bastantes', 'sinverguenzas', 'adecuada', 'confirmado', 'corrompido', 'asistiria', 'someriado', 'merolico', 'cumpleanos', 'desonesto', 'lados', 'mexicano', 'orale', 'veras', 'nidos', 'farsantes', 'bienpero', 'traidores', 'empoderados', 'encueta', 'asecino', 'ostentados', 'aclaro', 'dulces', 'normal', 'estudiado', 'sinverguendas', 'decente', 'comerciante', 'propias', 'regalapartidos', 'clase', 'vendidosrealmente', 'carreados', 'incongruentes', 'apollemos', 'huleeeeeros', 'inflado', 'vieja', 'incomoda', 'acostumbrados', 'logica', 'verdadero', 'pendejadas', 'carroneros', 'pedorro', 'prostitutos', 'propio', 'igual', 'chapuceros', 'pensantes', 'gchclro', 'inca', 'save', 'dividido', 'foxito', 'qchaspm', 'exageradas', 'desinformada', 'fisico', 'traiciono', 'coludas', 'malos', 'cuantas', 'carruseles', 'barato', 'particulares', 'internado', 'perfectos', 'blancas', 'ipocritas', 'corto', 'ficientes', 'decrepitos', 'descerebrado', 'minimo', 'fuma', 'maxima', 'adulto', 'crueles', 'parciales', 'innecesaio', 'suprema', 'sinsera', 'democraticos', 'adinerada', 'funcional', 'mnss', 'malsanos', 'valio', 'lne', 'acarreo', 'vemdidos', 'queridos', 'deste', 'mafiosas', 'mesquinos', 'previllegios', 'escrupulos', 'vendido', 'huachicoleros', 'hdspm', 'acerquense', 'bonito', 'deshonestos', 'lisensensiado', 'insignificante', 'nato', 'paypa', 'electoralpero', 'nesecitada', 'ilegal', 'recursospuro', 'aerea', 'variadas', 'corruptisimos', 'dignos', 'senoras', 'ruquito', 'incorruptibles', 'tremenda', 'gastadera', 'manche', 'encerrado', 'renegrido', 'precidente', 'innombrables', 'humana', 'acarrearia', 'conservadores', 'decrepito', 'pura', 'cambio', 'saqueadora', 'molestos', 'limpias', 'altos', 'manana', 'mejores', 'alos', 'pedorras', 'duena', 'jajaja', 'muertas', 'cinicosratas', 'ambulantes', 'habil', 'gustosa', 'des', 'foxresentido', 'presidenciales', 'almada', 'mexicohasta', 'cean', 'deque', 'golpistas', 'sinverguenzada', 'convertidos', 'acarriados', 'anuales', 'huevos', 'visonte', 'irresponsables', 'vianello', 'mula', 'antimexicanos', 'farsante', 'falsas', 'paridos', 'recreativa', 'prometido', 'arrabaleros', 'ofencivo', 'immundas', 'stos', 'marihuanono', 'orate', 'tibia', 'viejos', 'balga', 'tubites', 'aprox', 'pseudo', 'acarrearal', 'organizado', 'margara', 'firme', 'encabezados', 'fraudulentos', 'necios', 'amado', 'bitasilina', 'dicho', 'humildeahora', 'tranquilos', 'terminada', 'desorientado', 'patriasdelincuenteshipocritasnefastos', 'ranas', 'jogosa', 'asesinos', 'pasasdos', 'vivido', 'deleales', 'correcta', 'enfermos', 'orgullosos', 'sentidos', 'senora', 'conosemosa', 'puebloson', 'vudjito', 'sercas', 'asquerosas', 'despedidos', 'arrabaleroscorruptostraidoresmentirosos', 'social', 'productivo', 'intocable', 'desesperados', 'duermase', 'panista', 'vaquetones', 'pintada', 'desquiciado', 'azteca', 'presentes', 'segundo', 'pandilla', 'zombi', 'salinas', 'gueros', 'rubio', 'corrupta', 'fueraaaaaa', 'perdidos', 'hecho', 'falsos', 'nocivos', 'basico', 'amigos', 'honrosas', 'empleados', 'feliz', 'k', 'amadas'}</code></pre>
+</div>
+</div>
+<div class="cell">
+<div class="sourceCode cell-code" id="cb30"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb30-1"><a href="#cb30-1" aria-hidden="true" tabindex="-1"></a>adj_tag <span class="op">=</span> {}</span>
+<span id="cb30-2"><a href="#cb30-2" aria-hidden="true" tabindex="-1"></a><span class="cf">for</span> adj <span class="kw">in</span> adjs:</span>
+<span id="cb30-3"><a href="#cb30-3" aria-hidden="true" tabindex="-1"></a>    <span class="cf">if</span> adj <span class="kw">in</span> word_to_vec.keys():</span>
+<span id="cb30-4"><a href="#cb30-4" aria-hidden="true" tabindex="-1"></a>        tag <span class="op">=</span> knn.predict([word_to_vec[adj]])</span>
+<span id="cb30-5"><a href="#cb30-5" aria-hidden="true" tabindex="-1"></a>        adj_tag[adj] <span class="op">=</span> tag[<span class="dv">0</span>]</span>
+<span id="cb30-6"><a href="#cb30-6" aria-hidden="true" tabindex="-1"></a>        </span>
+<span id="cb30-7"><a href="#cb30-7" aria-hidden="true" tabindex="-1"></a><span class="bu">print</span>(<span class="bu">list</span>(adj_tag.items())[:<span class="dv">10</span>])</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+</div>
+</section>
+</section>
+<section id="given-a-word-return-the-k-nearest-neighbors" class="level2">
+<h2 class="anchored" data-anchor-id="given-a-word-return-the-k-nearest-neighbors">Given a word, return the k nearest neighbors:</h2>
+<div class="cell" data-execution_count="45">
+<div class="sourceCode cell-code" id="cb31"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb31-1"><a href="#cb31-1" aria-hidden="true" tabindex="-1"></a><span class="kw">def</span> get_k_nearest_neighbours(word, k, word_to_vec,knn):</span>
+<span id="cb31-2"><a href="#cb31-2" aria-hidden="true" tabindex="-1"></a>    <span class="co">'''Given a word, return the k nearest neighbours'''</span></span>
+<span id="cb31-3"><a href="#cb31-3" aria-hidden="true" tabindex="-1"></a>    <span class="cf">if</span> word <span class="kw">in</span> word_to_vec.keys():</span>
+<span id="cb31-4"><a href="#cb31-4" aria-hidden="true" tabindex="-1"></a>        word_vec <span class="op">=</span> [word_to_vec[word]]</span>
+<span id="cb31-5"><a href="#cb31-5" aria-hidden="true" tabindex="-1"></a>        results <span class="op">=</span> knn.kneighbors(word_vec, n_neighbors<span class="op">=</span>k, return_distance<span class="op">=</span><span class="va">True</span>)</span>
+<span id="cb31-6"><a href="#cb31-6" aria-hidden="true" tabindex="-1"></a>        index <span class="op">=</span> results[<span class="dv">1</span>]</span>
+<span id="cb31-7"><a href="#cb31-7" aria-hidden="true" tabindex="-1"></a>        <span class="cf">for</span> i <span class="kw">in</span> index:</span>
+<span id="cb31-8"><a href="#cb31-8" aria-hidden="true" tabindex="-1"></a>            <span class="bu">print</span>(df.iloc[i][<span class="st">'word'</span>])</span>
+<span id="cb31-9"><a href="#cb31-9" aria-hidden="true" tabindex="-1"></a>    <span class="cf">else</span>:</span>
+<span id="cb31-10"><a href="#cb31-10" aria-hidden="true" tabindex="-1"></a>        <span class="bu">print</span>(<span class="st">'The word is not in the vocabulary'</span>)</span>
+<span id="cb31-11"><a href="#cb31-11" aria-hidden="true" tabindex="-1"></a>        </span>
+<span id="cb31-12"><a href="#cb31-12" aria-hidden="true" tabindex="-1"></a>get_k_nearest_neighbours(<span class="st">'perfecta'</span>, <span class="dv">3</span>, word_to_vec,knn)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="cell-output cell-output-stdout">
+<pre><code>915        buena
+651    imposible
+836     teniendo
+Name: word, dtype: object</code></pre>
+</div>
+</div>
+</section>
+<section id="given-a-word-predict-its-category" class="level2">
+<h2 class="anchored" data-anchor-id="given-a-word-predict-its-category">Given a word, predict its category</h2>
+<div class="cell" data-execution_count="47">
+<div class="sourceCode cell-code" id="cb33"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb33-1"><a href="#cb33-1" aria-hidden="true" tabindex="-1"></a><span class="kw">def</span> predict_category(word, word_to_vec, knn):</span>
+<span id="cb33-2"><a href="#cb33-2" aria-hidden="true" tabindex="-1"></a>    <span class="cf">if</span> word <span class="kw">in</span> word_to_vec.keys():</span>
+<span id="cb33-3"><a href="#cb33-3" aria-hidden="true" tabindex="-1"></a>        word_vec <span class="op">=</span> [word_to_vec[word]]</span>
+<span id="cb33-4"><a href="#cb33-4" aria-hidden="true" tabindex="-1"></a>        tag <span class="op">=</span> knn.predict(word_vec)</span>
+<span id="cb33-5"><a href="#cb33-5" aria-hidden="true" tabindex="-1"></a>        <span class="cf">if</span> tag[<span class="dv">0</span>] <span class="op">==</span> <span class="fl">0.0</span>:</span>
+<span id="cb33-6"><a href="#cb33-6" aria-hidden="true" tabindex="-1"></a>            <span class="bu">print</span>(<span class="st">'The word is a vice'</span>)</span>
+<span id="cb33-7"><a href="#cb33-7" aria-hidden="true" tabindex="-1"></a>        <span class="cf">else</span>:</span>
+<span id="cb33-8"><a href="#cb33-8" aria-hidden="true" tabindex="-1"></a>            <span class="bu">print</span>(<span class="st">'The word is a virtue'</span>)</span>
+<span id="cb33-9"><a href="#cb33-9" aria-hidden="true" tabindex="-1"></a>    <span class="cf">else</span>:</span>
+<span id="cb33-10"><a href="#cb33-10" aria-hidden="true" tabindex="-1"></a>        <span class="bu">print</span>(<span class="st">'The word is not in the vocabulary'</span>)</span>
+<span id="cb33-11"><a href="#cb33-11" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb33-12"><a href="#cb33-12" aria-hidden="true" tabindex="-1"></a>predict_category(<span class="st">'perfecta'</span>, word_to_vec, knn)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="cell-output cell-output-stdout">
+<pre><code>The word is a vice</code></pre>
+</div>
+</div>
+
+
+</section>
+
+</main> <!-- /main -->
+<script id="quarto-html-after-body" type="application/javascript">
+window.document.addEventListener("DOMContentLoaded", function (event) {
+  const toggleBodyColorMode = (bsSheetEl) => {
+    const mode = bsSheetEl.getAttribute("data-mode");
+    const bodyEl = window.document.querySelector("body");
+    if (mode === "dark") {
+      bodyEl.classList.add("quarto-dark");
+      bodyEl.classList.remove("quarto-light");
+    } else {
+      bodyEl.classList.add("quarto-light");
+      bodyEl.classList.remove("quarto-dark");
+    }
+  }
+  const toggleBodyColorPrimary = () => {
+    const bsSheetEl = window.document.querySelector("link#quarto-bootstrap");
+    if (bsSheetEl) {
+      toggleBodyColorMode(bsSheetEl);
+    }
+  }
+  toggleBodyColorPrimary();  
+  const icon = "";
+  const anchorJS = new window.AnchorJS();
+  anchorJS.options = {
+    placement: 'right',
+    icon: icon
+  };
+  anchorJS.add('.anchored');
+  const isCodeAnnotation = (el) => {
+    for (const clz of el.classList) {
+      if (clz.startsWith('code-annotation-')) {                     
+        return true;
+      }
+    }
+    return false;
+  }
+  const clipboard = new window.ClipboardJS('.code-copy-button', {
+    text: function(trigger) {
+      const codeEl = trigger.previousElementSibling.cloneNode(true);
+      for (const childEl of codeEl.children) {
+        if (isCodeAnnotation(childEl)) {
+          childEl.remove();
+        }
+      }
+      return codeEl.innerText;
+    }
+  });
+  clipboard.on('success', function(e) {
+    // button target
+    const button = e.trigger;
+    // don't keep focus
+    button.blur();
+    // flash "checked"
+    button.classList.add('code-copy-button-checked');
+    var currentTitle = button.getAttribute("title");
+    button.setAttribute("title", "Copied!");
+    let tooltip;
+    if (window.bootstrap) {
+      button.setAttribute("data-bs-toggle", "tooltip");
+      button.setAttribute("data-bs-placement", "left");
+      button.setAttribute("data-bs-title", "Copied!");
+      tooltip = new bootstrap.Tooltip(button, 
+        { trigger: "manual", 
+          customClass: "code-copy-button-tooltip",
+          offset: [0, -8]});
+      tooltip.show();    
+    }
+    setTimeout(function() {
+      if (tooltip) {
+        tooltip.hide();
+        button.removeAttribute("data-bs-title");
+        button.removeAttribute("data-bs-toggle");
+        button.removeAttribute("data-bs-placement");
+      }
+      button.setAttribute("title", currentTitle);
+      button.classList.remove('code-copy-button-checked');
+    }, 1000);
+    // clear code selection
+    e.clearSelection();
+  });
+  function tippyHover(el, contentFn) {
+    const config = {
+      allowHTML: true,
+      content: contentFn,
+      maxWidth: 500,
+      delay: 100,
+      arrow: false,
+      appendTo: function(el) {
+          return el.parentElement;
+      },
+      interactive: true,
+      interactiveBorder: 10,
+      theme: 'quarto',
+      placement: 'bottom-start'
+    };
+    window.tippy(el, config); 
+  }
+  const noterefs = window.document.querySelectorAll('a[role="doc-noteref"]');
+  for (var i=0; i<noterefs.length; i++) {
+    const ref = noterefs[i];
+    tippyHover(ref, function() {
+      // use id or data attribute instead here
+      let href = ref.getAttribute('data-footnote-href') || ref.getAttribute('href');
+      try { href = new URL(href).hash; } catch {}
+      const id = href.replace(/^#\/?/, "");
+      const note = window.document.getElementById(id);
+      return note.innerHTML;
+    });
+  }
+      let selectedAnnoteEl;
+      const selectorForAnnotation = ( cell, annotation) => {
+        let cellAttr = 'data-code-cell="' + cell + '"';
+        let lineAttr = 'data-code-annotation="' +  annotation + '"';
+        const selector = 'span[' + cellAttr + '][' + lineAttr + ']';
+        return selector;
+      }
+      const selectCodeLines = (annoteEl) => {
+        const doc = window.document;
+        const targetCell = annoteEl.getAttribute("data-target-cell");
+        const targetAnnotation = annoteEl.getAttribute("data-target-annotation");
+        const annoteSpan = window.document.querySelector(selectorForAnnotation(targetCell, targetAnnotation));
+        const lines = annoteSpan.getAttribute("data-code-lines").split(",");
+        const lineIds = lines.map((line) => {
+          return targetCell + "-" + line;
+        })
+        let top = null;
+        let height = null;
+        let parent = null;
+        if (lineIds.length > 0) {
+            //compute the position of the single el (top and bottom and make a div)
+            const el = window.document.getElementById(lineIds[0]);
+            top = el.offsetTop;
+            height = el.offsetHeight;
+            parent = el.parentElement.parentElement;
+          if (lineIds.length > 1) {
+            const lastEl = window.document.getElementById(lineIds[lineIds.length - 1]);
+            const bottom = lastEl.offsetTop + lastEl.offsetHeight;
+            height = bottom - top;
+          }
+          if (top !== null && height !== null && parent !== null) {
+            // cook up a div (if necessary) and position it 
+            let div = window.document.getElementById("code-annotation-line-highlight");
+            if (div === null) {
+              div = window.document.createElement("div");
+              div.setAttribute("id", "code-annotation-line-highlight");
+              div.style.position = 'absolute';
+              parent.appendChild(div);
+            }
+            div.style.top = top - 2 + "px";
+            div.style.height = height + 4 + "px";
+            let gutterDiv = window.document.getElementById("code-annotation-line-highlight-gutter");
+            if (gutterDiv === null) {
+              gutterDiv = window.document.createElement("div");
+              gutterDiv.setAttribute("id", "code-annotation-line-highlight-gutter");
+              gutterDiv.style.position = 'absolute';
+              const codeCell = window.document.getElementById(targetCell);
+              const gutter = codeCell.querySelector('.code-annotation-gutter');
+              gutter.appendChild(gutterDiv);
+            }
+            gutterDiv.style.top = top - 2 + "px";
+            gutterDiv.style.height = height + 4 + "px";
+          }
+          selectedAnnoteEl = annoteEl;
+        }
+      };
+      const unselectCodeLines = () => {
+        const elementsIds = ["code-annotation-line-highlight", "code-annotation-line-highlight-gutter"];
+        elementsIds.forEach((elId) => {
+          const div = window.document.getElementById(elId);
+          if (div) {
+            div.remove();
+          }
+        });
+        selectedAnnoteEl = undefined;
+      };
+      // Attach click handler to the DT
+      const annoteDls = window.document.querySelectorAll('dt[data-target-cell]');
+      for (const annoteDlNode of annoteDls) {
+        annoteDlNode.addEventListener('click', (event) => {
+          const clickedEl = event.target;
+          if (clickedEl !== selectedAnnoteEl) {
+            unselectCodeLines();
+            const activeEl = window.document.querySelector('dt[data-target-cell].code-annotation-active');
+            if (activeEl) {
+              activeEl.classList.remove('code-annotation-active');
+            }
+            selectCodeLines(clickedEl);
+            clickedEl.classList.add('code-annotation-active');
+          } else {
+            // Unselect the line
+            unselectCodeLines();
+            clickedEl.classList.remove('code-annotation-active');
+          }
+        });
+      }
+  const findCites = (el) => {
+    const parentEl = el.parentElement;
+    if (parentEl) {
+      const cites = parentEl.dataset.cites;
+      if (cites) {
+        return {
+          el,
+          cites: cites.split(' ')
+        };
+      } else {
+        return findCites(el.parentElement)
+      }
+    } else {
+      return undefined;
+    }
+  };
+  var bibliorefs = window.document.querySelectorAll('a[role="doc-biblioref"]');
+  for (var i=0; i<bibliorefs.length; i++) {
+    const ref = bibliorefs[i];
+    const citeInfo = findCites(ref);
+    if (citeInfo) {
+      tippyHover(citeInfo.el, function() {
+        var popup = window.document.createElement('div');
+        citeInfo.cites.forEach(function(cite) {
+          var citeDiv = window.document.createElement('div');
+          citeDiv.classList.add('hanging-indent');
+          citeDiv.classList.add('csl-entry');
+          var biblioDiv = window.document.getElementById('ref-' + cite);
+          if (biblioDiv) {
+            citeDiv.innerHTML = biblioDiv.innerHTML;
+          }
+          popup.appendChild(citeDiv);
+        });
+        return popup.innerHTML;
+      });
+    }
+  }
+});
+</script>
+</div> <!-- /content -->
+
+
+
+</body></html>
