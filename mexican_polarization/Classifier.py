@@ -9,7 +9,7 @@ import numpy as np
 from sklearn.neighbors import KNeighborsClassifier
 from sklearn.model_selection import train_test_split
 
-# %% ../nbs/02_classifier.ipynb 11
+# %% ../nbs/02_classifier.ipynb 15
 class Classifier:
     def __init__(self):
         self.embeddings = None

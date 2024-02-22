@@ -5,3 +5,6 @@ website:
       - 00_loader.ipynb
       - 01_analyzer.ipynb
       - 02_classifier.ipynb
+      - 03_class_research.ipynb
+      - 04_tren_maya.ipynb
+      - demo.ipynb

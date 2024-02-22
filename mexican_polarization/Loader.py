@@ -20,6 +20,7 @@ class Loader:
         self.csv = csv
         self.virtue_dict = self._load_dict('virtue', virtue_dict)
         self.vice_dict = self._load_dict('vice', vice_dict)
+        self.original = None
         self.processed = None
         self.processed_bool = False
 
@@ -39,6 +40,7 @@ class Loader:
                     ):
         """Cleans the columns of the csv file prior the polarization analysis"""
         df = pd.read_csv(self.csv)
+        self.original = df.copy()
 
         cols = text_cols + num_cols + date_cols
         df.drop_duplicates(keep='first',inplace=True) 
@@ -66,6 +68,10 @@ class Loader:
         for col in text_cols:
             df[col] = df[col].apply(clean_message)
             df[col] = df[col].astype(str)
+
+        for col in num_cols:
+            df[col] = pd.to_numeric(df[col], errors='coerce')
+
 
         new = df.loc[:,cols]
         new = new.reset_index(drop=True)
