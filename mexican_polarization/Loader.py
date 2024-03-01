@@ -109,3 +109,14 @@ class Loader:
         self.processed = processed
         self.processed_bool = True
 
+#Make a function to eliminate certain words from the vice or virtue dict:
+    def eliminate_word(self, 
+                       word: str, # Word to eliminate
+                        dictionary: str): # Dictionary to eliminate the word from
+        """Eliminates a word from the virtue or vice dictionary"""
+        if dictionary == 'virtue':
+            del self.virtue_dict[word]
+        elif dictionary == 'vice':
+            del self.vice_dict[word]
+        else:
+            raise ValueError('The dictionary must be either virtue or vice')

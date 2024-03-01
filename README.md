@@ -4,8 +4,9 @@
 
 ## Install
 
-``` sh
-pip install mexican_polarization
-```
+> The library is still in construction, since adaptation to multiple
+> workflows are on the run
 
 ## How to use
+
+> Coming soon
