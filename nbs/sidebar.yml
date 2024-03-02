@@ -7,4 +7,6 @@ website:
       - 02_classifier.ipynb
       - 03_class_research.ipynb
       - 04_suprema.ipynb
+      - 05_tren_maya.ipynb
+      - 06_INE.ipynb
       - demo.ipynb
